@@ -180,7 +180,7 @@ public abstract class DataGenerator {
 				}
 			}
 		} else if(dataType.equalsIgnoreCase(DataType.MONEY_POS.getDataType())) {
-			String moneyAmount = String.valueOf(dataFaker.number().randomDouble(2, 0, 1000000));
+			String moneyAmount = String.valueOf(dataFaker.number().randomDouble(2, 0, 10000));
 			if(required) {
 				dataReturned = moneyAmount;
 			}else {
@@ -191,7 +191,7 @@ public abstract class DataGenerator {
 				}
 			}
 		} else if(dataType.equalsIgnoreCase(DataType.MONEY_POSNEG.getDataType())) {
-			String moneyAmount = String.valueOf(dataFaker.number().randomDouble(2, -1000, 1000000));
+			String moneyAmount = String.valueOf(dataFaker.number().randomDouble(2, -1000, 10000));
 			if(required) {
 				dataReturned = moneyAmount;
 			}else {

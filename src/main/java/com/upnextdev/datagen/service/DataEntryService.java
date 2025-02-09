@@ -47,7 +47,7 @@ public class DataEntryService {
 		System.out.println("-------------");
 		
 		MySQLGenerator gen = new MySQLGenerator();
-		gen.printData(entryList, 5);
+		gen.printData(entryList, 1000);
 	}
 	
 	private List<DataEntry> buildDataArrays(List<String> columns, List<String> dataTypes, List<String> isRequired) {
