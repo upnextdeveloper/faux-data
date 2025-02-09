@@ -37,6 +37,8 @@ public abstract class DataGenerator {
 			stringB.append(getRandomData(entry) );
 			row = row + "," + stringB.toString();
 		}
+		// remove first comma
+		row = row.substring(1);
 		return row;
 	}
 
