@@ -3,12 +3,9 @@ package com.upnextdev.datagen.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-
 import com.upnextdev.datagen.entity.DataEntry;
-import com.upnextdev.datagen.generator.DataGenerator;
 import com.upnextdev.datagen.generator.MySQLGenerator;
 
 @Service
@@ -27,6 +24,7 @@ public class DataEntryService {
 		List<String> columnValues = new ArrayList<String>();
 		List<String> dataTypeValues = new ArrayList<String>();
 		List<String> iusRequiredValues = new ArrayList<String>();
+		List<String> rowCountValues = new ArrayList<>();
 
 		values.forEach(v -> {
 			v = v.trim();
@@ -39,15 +37,20 @@ public class DataEntryService {
 			}else if(v.startsWith("isRequired")) {
 				v = v.substring(11);
 				iusRequiredValues.add(v);
+			}else if(v.startsWith("rowCount")) {
+				v = v.substring(9);
+				rowCountValues.add(v);
 			}
 		});
+		
+		Integer rowCount = Integer.parseInt(rowCountValues.get(0));
 		
 		List<DataEntry> entryList = buildDataArrays(columnValues, dataTypeValues, iusRequiredValues);
 
 		System.out.println("-------------");
 		
 		MySQLGenerator gen = new MySQLGenerator();
-		gen.printData(entryList, 1000);
+		gen.printData(entryList, rowCount);
 	}
 	
 	private List<DataEntry> buildDataArrays(List<String> columns, List<String> dataTypes, List<String> isRequired) {

@@ -18,23 +18,22 @@ public abstract class DataGenerator {
 	private Faker dataFaker = new Faker(new Locale("en-US"));
 	int newId = dataFaker.number().numberBetween(1, 100000000);
 
-	protected List<String> generateData(List<DataEntry> dataEntries,
-			int rowCount) {
+	protected List<String> generateData(List<DataEntry> dataEntries, int rowCount) {
 		List<String> dataList = new ArrayList<String>();
-		
-		for(int i=0; i < rowCount; i++) {
+
+		for (int i = 0; i < rowCount; i++) {
 			dataList.add(printRowOfData(dataEntries));
 			newId++;
 		}
-		
+
 		return dataList;
 	}
-	
+
 	private String printRowOfData(List<DataEntry> entries) {
 		String row = "";
-		for(DataEntry entry: entries) {
+		for (DataEntry entry : entries) {
 			StringBuilder stringB = new StringBuilder();
-			stringB.append(getRandomData(entry) );
+			stringB.append(getRandomData(entry));
 			row = row + "," + stringB.toString();
 		}
 		// remove first comma
@@ -66,7 +65,7 @@ public abstract class DataGenerator {
 					dataReturned = "";
 				}
 			}
-			
+
 		} else if (dataType.equalsIgnoreCase(DataType.PAST_DATE.getDataType())) {
 			String pastDate = formmatedDate(dataFaker.date().past(18250, TimeUnit.DAYS));
 			if (required) {
@@ -78,181 +77,247 @@ public abstract class DataGenerator {
 					dataReturned = "";
 				}
 			}
-		} else if(dataType.equalsIgnoreCase(DataType.FUTURE_DATE.getDataType())){
+		} else if (dataType.equalsIgnoreCase(DataType.FIRST_NAME.getDataType())) {
+			String firstName = dataFaker.name().firstName();
+			if (required) {
+				dataReturned = firstName;
+			} else {
+				if (addData()) {
+					dataReturned = firstName;
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.MIDDLE_NAME.getDataType())) {
+			String middleName = dataFaker.name().firstName();
+			if (required) {
+				dataReturned = middleName;
+			} else {
+				if (addData()) {
+					dataReturned = middleName;
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.LAST_NAME.getDataType())) {
+			String lastName = dataFaker.name().lastName();
+			if (required) {
+				dataReturned = lastName;
+			} else {
+				if (addData()) {
+					dataReturned = lastName;
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.FULL_NAME.getDataType())) {
+			String fullName = dataFaker.name().lastName();
+			if (required) {
+				dataReturned = fullName;
+			} else {
+				if (addData()) {
+					dataReturned = fullName;
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.FULL_NAME_WMIDDLE.getDataType())) {
+			String fullNameWithMiddle = dataFaker.name().nameWithMiddle();
+			if (required) {
+				dataReturned = fullNameWithMiddle;
+			} else {
+				if (addData()) {
+					dataReturned = fullNameWithMiddle;
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.USERNAME.getDataType())) {
+			String username = dataFaker.name().username();
+			if (required) {
+				dataReturned = username;
+			} else {
+				if (addData()) {
+					dataReturned = username;
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.FUTURE_DATE.getDataType())) {
 			String futureDate = formmatedDate(dataFaker.date().future(18250, TimeUnit.DAYS));
-			if(required) {
+			if (required) {
 				dataReturned = futureDate;
-			}else {
-				if(addData()) {
+			} else {
+				if (addData()) {
 					dataReturned = futureDate;
-				}else {
+				} else {
 					dataReturned = "";
 				}
 			}
-		} else if(dataType.equalsIgnoreCase(DataType.STREET.getDataType())) {
+		} else if (dataType.equalsIgnoreCase(DataType.STREET.getDataType())) {
 			String street = dataFaker.address().streetAddress().toString();
-			if(required) {
+			if (required) {
 				dataReturned = street;
-			}else {
-				if(addData()) {
+			} else {
+				if (addData()) {
 					dataReturned = street;
-				}else {
+				} else {
 					dataReturned = "";
 				}
 			}
-		} else if(dataType.equalsIgnoreCase(DataType.CITY.getDataType())) {
+		} else if (dataType.equalsIgnoreCase(DataType.CITY.getDataType())) {
 			String city = dataFaker.address().city().toString();
-			if(required) {
+			if (required) {
 				dataReturned = city;
-			}else {
-				if(addData()) {
+			} else {
+				if (addData()) {
 					dataReturned = city;
-				}else {
+				} else {
 					dataReturned = "";
 				}
 			}
-		} else if(dataType.equalsIgnoreCase(DataType.STATE.getDataType())) {
+		} else if (dataType.equalsIgnoreCase(DataType.STATE.getDataType())) {
 			String state = dataFaker.address().state().toString();
-			if(required) {
+			if (required) {
 				dataReturned = state;
-			}else {
-				if(addData()) {
+			} else {
+				if (addData()) {
 					dataReturned = state;
-				}else {
+				} else {
 					dataReturned = "";
 				}
 			}
-			
-		} else if(dataType.equalsIgnoreCase(DataType.STATE_ABBR.getDataType())) {
+
+		} else if (dataType.equalsIgnoreCase(DataType.STATE_ABBR.getDataType())) {
 			String stateAbb = dataFaker.address().stateAbbr().toString();
-			if(required) {
+			if (required) {
 				dataReturned = stateAbb;
-			}else {
-				if(addData()) {
+			} else {
+				if (addData()) {
 					dataReturned = stateAbb;
-				}else {
+				} else {
 					dataReturned = "";
 				}
 			}
-		} else if(dataType.equalsIgnoreCase(DataType.ZIP_CODE.getDataType())) {
+		} else if (dataType.equalsIgnoreCase(DataType.ZIP_CODE.getDataType())) {
 			String zipCode = dataFaker.address().zipCode().toString();
-			if(required) {
+			if (required) {
 				dataReturned = zipCode;
-			}else {
-				if(addData()) {
+			} else {
+				if (addData()) {
 					dataReturned = zipCode;
-				}else {
+				} else {
 					dataReturned = "";
 				}
 			}
-		} else if(dataType.equalsIgnoreCase(DataType.TRUE_FALSE.getDataType())) {
+		} else if (dataType.equalsIgnoreCase(DataType.TRUE_FALSE.getDataType())) {
 			String truefalse = String.valueOf(dataFaker.bool().bool());
-			if(required) {
+			if (required) {
 				dataReturned = truefalse;
-			}else {
-				if(addData()) {
+			} else {
+				if (addData()) {
 					dataReturned = truefalse;
-				}else {
+				} else {
 					dataReturned = "";
 				}
 			}
-		} else if(dataType.equalsIgnoreCase(DataType.GENDER.getDataType())) {
+		} else if (dataType.equalsIgnoreCase(DataType.GENDER.getDataType())) {
 			String gender = dataFaker.demographic().sex();
-			if(required) {
+			if (required) {
 				dataReturned = gender;
-			}else {
-				if(addData()) {
+			} else {
+				if (addData()) {
 					dataReturned = gender;
-				}else {
+				} else {
 					dataReturned = "";
 				}
 			}
-		} else if(dataType.equalsIgnoreCase(DataType.BIRTHDAY.getDataType())) {
-			//String birthday = dataFaker.date().birthday().toString();
+		} else if (dataType.equalsIgnoreCase(DataType.BIRTHDAY.getDataType())) {
+			// String birthday = dataFaker.date().birthday().toString();
 			String birthday = formmatedDate(dataFaker.date().birthday());
-			if(required) {
+			if (required) {
 				dataReturned = birthday;
-			}else {
-				if(addData()) {
+			} else {
+				if (addData()) {
 					dataReturned = birthday;
-				}else {
+				} else {
 					dataReturned = "";
 				}
 			}
-		} else if(dataType.equalsIgnoreCase(DataType.MONEY_POS.getDataType())) {
+		} else if (dataType.equalsIgnoreCase(DataType.MONEY_POS.getDataType())) {
 			String moneyAmount = String.valueOf(dataFaker.number().randomDouble(2, 0, 10000));
-			if(required) {
+			if (required) {
 				dataReturned = moneyAmount;
-			}else {
-				if(addData()) {
+			} else {
+				if (addData()) {
 					dataReturned = moneyAmount;
-				}else {
+				} else {
 					dataReturned = "";
 				}
 			}
-		} else if(dataType.equalsIgnoreCase(DataType.MONEY_POSNEG.getDataType())) {
+		} else if (dataType.equalsIgnoreCase(DataType.MONEY_POSNEG.getDataType())) {
 			String moneyAmount = String.valueOf(dataFaker.number().randomDouble(2, -1000, 10000));
-			if(required) {
+			if (required) {
 				dataReturned = moneyAmount;
-			}else {
-				if(addData()) {
+			} else {
+				if (addData()) {
 					dataReturned = moneyAmount;
-				}else {
+				} else {
 					dataReturned = "";
 				}
 			}
-		} else if(dataType.equalsIgnoreCase(DataType.EMAIL.getDataType())) {
+		} else if (dataType.equalsIgnoreCase(DataType.EMAIL.getDataType())) {
 			String email = dataFaker.internet().emailAddress();
-			if(required) {
+			if (required) {
 				dataReturned = email;
-			}else {
-				if(addData()) {
+			} else {
+				if (addData()) {
 					dataReturned = email;
-				}else {
+				} else {
 					dataReturned = "";
 				}
 			}
-		} else if(dataType.equalsIgnoreCase(DataType.PHONE_NUM.getDataType())) {
+		} else if (dataType.equalsIgnoreCase(DataType.PHONE_NUM.getDataType())) {
 			String phoneNumber = dataFaker.phoneNumber().cellPhone();
-			if(required) {
+			if (required) {
 				dataReturned = phoneNumber;
-			}else {
-				if(addData()) {
+			} else {
+				if (addData()) {
 					dataReturned = phoneNumber;
-				}else {
+				} else {
 					dataReturned = "";
 				}
 			}
-		} else if(dataType.equalsIgnoreCase(DataType.RACE.getDataType())) {
+		} else if (dataType.equalsIgnoreCase(DataType.RACE.getDataType())) {
 			String race = dataFaker.demographic().race();
-			if(required) {
+			if (required) {
 				dataReturned = race;
-			}else {
-				if(addData()) {
+			} else {
+				if (addData()) {
 					dataReturned = race;
-				}else {
+				} else {
 					dataReturned = "";
 				}
 			}
-		} else if(dataType.equalsIgnoreCase(DataType.MARITAL_STATUS.getDataType())) {
+		} else if (dataType.equalsIgnoreCase(DataType.MARITAL_STATUS.getDataType())) {
 			String marital = dataFaker.demographic().maritalStatus();
-			if(required) {
+			if (required) {
 				dataReturned = marital;
-			}else {
-				if(addData()) {
+			} else {
+				if (addData()) {
 					dataReturned = marital;
-				}else {
+				} else {
 					dataReturned = "";
 				}
 			}
-		} else if(dataType.equalsIgnoreCase(DataType.CURRENT_EDUCATION.getDataType())) {
+		} else if (dataType.equalsIgnoreCase(DataType.CURRENT_EDUCATION.getDataType())) {
 			String education = dataFaker.demographic().educationalAttainment();
-			if(required) {
+			if (required) {
 				dataReturned = education;
-			}else {
-				if(addData()) {
+			} else {
+				if (addData()) {
 					dataReturned = education;
-				}else {
+				} else {
 					dataReturned = "";
 				}
 			}
@@ -269,7 +334,7 @@ public abstract class DataGenerator {
 		Random random = new Random();
 		return random.nextBoolean();
 	}
-	
+
 	private String formmatedDate(Date date) {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String formmattedDate = formatter.format(date);

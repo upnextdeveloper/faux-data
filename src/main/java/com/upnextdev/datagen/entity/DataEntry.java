@@ -8,14 +8,23 @@ public class DataEntry {
 	private String columnName;
 	private String dataType;
 	private String isRequired;
+	private Integer rowCount;
 	
 	public DataEntry() {}
-
+	
 	public DataEntry(String columnName, String dataType, String isRequired) {
 		super();
 		this.columnName = columnName;
 		this.dataType = dataType;
 		this.isRequired = isRequired;
+	}
+
+	public DataEntry(String columnName, String dataType, String isRequired, Integer rowCount) {
+		super();
+		this.columnName = columnName;
+		this.dataType = dataType;
+		this.isRequired = isRequired;
+		this.rowCount = rowCount;
 	}
 
 	public String getColumnName() {
@@ -42,10 +51,17 @@ public class DataEntry {
 		this.isRequired = isRequired;
 	}
 
+	public Integer getRowCount() {
+		return rowCount;
+	}
+
+	public void setRowCount(Integer rowCount) {
+		this.rowCount = rowCount;
+	}
+
 	@Override
 	public String toString() {
-		return "DataEntry [columnName=" + columnName + ", dataType=" + dataType + ", isRequired=" + isRequired + "]";
+		return "DataEntry [columnName=" + columnName + ", dataType=" + dataType + ", isRequired=" + isRequired
+				+ ", rowCount=" + rowCount + "]";
 	}
-	
-	
 }
