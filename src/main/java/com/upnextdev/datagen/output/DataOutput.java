@@ -1,11 +1,11 @@
 package com.upnextdev.datagen.output;
 
-import java.io.File;
+
 import java.util.List;
 
 public interface DataOutput {
 
 	// class to have the data outputted to the user (in files)
-	public File createOutputFile(List<String> dataRows);
+	public void createOutputFile(List<String> dataRows, List<String> columnValues);
 	// this uses the datagenerator to create the files
 }

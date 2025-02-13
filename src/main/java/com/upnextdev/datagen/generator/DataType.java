@@ -25,7 +25,9 @@ public enum DataType {
 	PHONE_NUM("Phone Number"),
 	RACE("Race"),
 	MARITAL_STATUS("Marital Status"),
-	CURRENT_EDUCATION("Current Education");
+	CURRENT_EDUCATION("Current Education"),
+	AGE("Age")
+	;
 	
 	private final String dataType;
 	

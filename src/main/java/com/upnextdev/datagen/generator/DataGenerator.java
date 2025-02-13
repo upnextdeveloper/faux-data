@@ -266,6 +266,17 @@ public abstract class DataGenerator {
 					dataReturned = "";
 				}
 			}
+		} else if (dataType.equalsIgnoreCase(DataType.POSITIVE_NUM.getDataType())) {
+			String moneyAmount = String.valueOf(dataFaker.number().numberBetween(0, 50000));
+			if (required) {
+				dataReturned = moneyAmount;
+			} else {
+				if (addData()) {
+					dataReturned = moneyAmount;
+				} else {
+					dataReturned = "";
+				}
+			}
 		} else if (dataType.equalsIgnoreCase(DataType.EMAIL.getDataType())) {
 			String email = dataFaker.internet().emailAddress();
 			if (required) {
@@ -321,13 +332,25 @@ public abstract class DataGenerator {
 					dataReturned = "";
 				}
 			}
+		} else if (dataType.equalsIgnoreCase(DataType.AGE.getDataType())) {
+			String education = String.valueOf(dataFaker.number().numberBetween(0, 110));
+			if (required) {
+				dataReturned = education;
+			} else {
+				if (addData()) {
+					dataReturned = education;
+				} else {
+					dataReturned = "";
+				}
+			}
 		} else {
 			System.out.println(dataType + " does not exist");
 		}
 
 		return dataReturned;
 	}
-
+	
+	abstract public void printData(List <String> columnValues, List<DataEntry> e, int count);
 	// if a column is optional, it will generate data based on
 	// if the below value is returned true
 	private boolean addData() {

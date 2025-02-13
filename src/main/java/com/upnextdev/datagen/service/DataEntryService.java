@@ -6,7 +6,10 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import com.upnextdev.datagen.entity.DataEntry;
+import com.upnextdev.datagen.generator.DataGenerator;
+import com.upnextdev.datagen.generator.ExcelGenerator;
 import com.upnextdev.datagen.generator.MySQLGenerator;
+import com.upnextdev.datagen.output.OutputFileType;
 
 @Service
 public class DataEntryService {
@@ -25,6 +28,7 @@ public class DataEntryService {
 		List<String> dataTypeValues = new ArrayList<String>();
 		List<String> iusRequiredValues = new ArrayList<String>();
 		List<String> rowCountValues = new ArrayList<>();
+		List<String> fileTypeValues = new ArrayList<>();
 
 		values.forEach(v -> {
 			v = v.trim();
@@ -40,6 +44,9 @@ public class DataEntryService {
 			}else if(v.startsWith("rowCount")) {
 				v = v.substring(9);
 				rowCountValues.add(v);
+			}else if(v.startsWith("fileType")) {
+				v = v.substring(9);
+				fileTypeValues.add(v);
 			}
 		});
 		
@@ -49,8 +56,19 @@ public class DataEntryService {
 
 		System.out.println("-------------");
 		
-		MySQLGenerator gen = new MySQLGenerator();
-		gen.printData(entryList, rowCount);
+		String fileType = fileTypeValues.get(0);
+		
+		DataGenerator gen = null;
+		if(fileType.equalsIgnoreCase(OutputFileType.EXCEL_FILE.getFileType())) {
+			gen = new ExcelGenerator();
+			gen.printData(columnValues, entryList, rowCount);
+		}else if(fileType.equalsIgnoreCase(OutputFileType.MYSQL_FILE.getFileType())) {
+			gen = new MySQLGenerator();
+			gen.printData(columnValues, entryList, rowCount);
+		}
+		
+		
+		
 	}
 	
 	private List<DataEntry> buildDataArrays(List<String> columns, List<String> dataTypes, List<String> isRequired) {
