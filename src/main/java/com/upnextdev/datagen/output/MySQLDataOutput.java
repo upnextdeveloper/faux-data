@@ -49,13 +49,15 @@ public class MySQLDataOutput implements DataOutput {
 				}
 				fileContent.deleteCharAt(fileContent.length()-2);
 				fileContent.append(";");
-				
+				System.out.println(fileContent.toString() + fileContent.length());
 				fileWriter.write(fileContent.toString());
+
 				
-				
-				FileOutputStream os = new FileOutputStream(mySQLFile);
+				FileOutputStream os = new FileOutputStream(new File(mySqlFileName));
 				fileWriter.close();
 				os.close();
+				
+				System.out.println("New file created: " + mySqlFileName);
 			}
 		} catch(IOException e) {
 			e.printStackTrace();

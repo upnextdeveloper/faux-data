@@ -16,7 +16,7 @@ public abstract class DataGenerator {
 	// class to do all the generation tasks
 	// class to print output depending on child class
 	private Faker dataFaker = new Faker(new Locale("en-US"));
-	int newId = dataFaker.number().numberBetween(1, 100000000);
+	int newId = dataFaker.number().numberBetween(1, 100000);
 
 	protected List<String> generateData(List<DataEntry> dataEntries, int rowCount) {
 		List<String> dataList = new ArrayList<String>();
@@ -79,6 +79,7 @@ public abstract class DataGenerator {
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.FIRST_NAME.getDataType())) {
 			String firstName = dataFaker.name().firstName();
+			firstName = firstName.replaceAll("\'","");
 			if (required) {
 				dataReturned = firstName;
 			} else {
@@ -90,6 +91,7 @@ public abstract class DataGenerator {
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.MIDDLE_NAME.getDataType())) {
 			String middleName = dataFaker.name().firstName();
+			middleName = middleName.replaceAll("\'","");
 			if (required) {
 				dataReturned = middleName;
 			} else {
@@ -101,6 +103,7 @@ public abstract class DataGenerator {
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.LAST_NAME.getDataType())) {
 			String lastName = dataFaker.name().lastName();
+			lastName = lastName.replaceAll("\'","");
 			if (required) {
 				dataReturned = lastName;
 			} else {
@@ -112,6 +115,7 @@ public abstract class DataGenerator {
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.FULL_NAME.getDataType())) {
 			String fullName = dataFaker.name().lastName();
+			fullName = fullName.replaceAll("\'","");
 			if (required) {
 				dataReturned = fullName;
 			} else {
@@ -123,6 +127,7 @@ public abstract class DataGenerator {
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.FULL_NAME_WMIDDLE.getDataType())) {
 			String fullNameWithMiddle = dataFaker.name().nameWithMiddle();
+			fullNameWithMiddle = fullNameWithMiddle.replaceAll("\'","");
 			if (required) {
 				dataReturned = fullNameWithMiddle;
 			} else {
