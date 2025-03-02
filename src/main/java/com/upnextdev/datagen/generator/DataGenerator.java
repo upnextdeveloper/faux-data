@@ -18,7 +18,7 @@ public abstract class DataGenerator {
 	private Faker dataFaker = new Faker(new Locale("en-US"));
 	int newId = dataFaker.number().numberBetween(1, 100000);
 
-	protected List<String> generateData(List<DataEntry> dataEntries, int rowCount) {
+	protected List<String> generateData(List<DataEntry> dataEntries, int rowCount) throws Exception {
 		List<String> dataList = new ArrayList<String>();
 
 		for (int i = 0; i < rowCount; i++) {
@@ -29,7 +29,7 @@ public abstract class DataGenerator {
 		return dataList;
 	}
 
-	private String printRowOfData(List<DataEntry> entries) {
+	private String printRowOfData(List<DataEntry> entries) throws Exception {
 		String row = "";
 		for (DataEntry entry : entries) {
 			StringBuilder stringB = new StringBuilder();
@@ -41,7 +41,7 @@ public abstract class DataGenerator {
 		return row;
 	}
 
-	private String getRandomData(DataEntry entry) {
+	private String getRandomData(DataEntry entry) throws Exception {
 		String isRequired = entry.getIsRequired();
 		String dataType = entry.getDataType();
 		boolean required = true;
@@ -350,12 +350,13 @@ public abstract class DataGenerator {
 			}
 		} else {
 			System.out.println(dataType + " does not exist");
+			throw new Exception("Data type: " + dataType + " does not exist");
 		}
 
 		return dataReturned;
 	}
 	
-	abstract public void printData(List <String> columnValues, List<DataEntry> e, int count);
+	abstract public void printData(List <String> columnValues, List<DataEntry> e, int count, String tableName) throws Exception;
 	// if a column is optional, it will generate data based on
 	// if the below value is returned true
 	private boolean addData() {

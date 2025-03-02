@@ -13,7 +13,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class ExcelDataOutput implements DataOutput{
 
 	@Override
-	public void createOutputFile(List<String> dataRows, List<String> columnValues) {
+	public void createOutputFile(List<String> dataRows, List<String> columnValues, String tableName) {
 		// TODO Auto-generated method stub
 		String fileName = "faux-data-excel-sheet-"+System.currentTimeMillis() + ".csv";
 		FileOutputStream opStream = null;
@@ -21,7 +21,7 @@ public class ExcelDataOutput implements DataOutput{
 		Workbook workbook = new XSSFWorkbook();
 		
 		// create new sheet
-		Sheet sheet = workbook.createSheet("faux-data-output");
+		Sheet sheet = workbook.createSheet(tableName);
 		
 		// create the first row for the columns
 		Row headersRow = sheet.createRow(0);

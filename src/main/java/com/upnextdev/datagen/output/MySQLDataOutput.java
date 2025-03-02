@@ -10,7 +10,7 @@ public class MySQLDataOutput implements DataOutput {
 
 	
 	@Override
-	public void createOutputFile(List<String> dataRows, List<String> columnValues) {
+	public void createOutputFile(List<String> dataRows, List<String> columnValues, String tableName) {
 		String mySqlFileName = "faux-data-mysql-" + System.currentTimeMillis() + ".sql";
 		File mySQLFile = null;
 		
@@ -25,7 +25,7 @@ public class MySQLDataOutput implements DataOutput {
 				for(int i =0; i < dataRows.size(); i++) {
 					String insertRow = "";
 					insertRow = insertRow + "INSERT INTO ";
-					insertRow = insertRow + "table (";
+					insertRow = insertRow + tableName + " (";
 					
 					
 					for(String col: columnValues) {

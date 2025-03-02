@@ -13,6 +13,8 @@ public class FauxDataApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FauxDataApplication.class, args);
+		Faker f = new Faker();
+		System.out.println(f.music().instrument());
 	}
 
 }
