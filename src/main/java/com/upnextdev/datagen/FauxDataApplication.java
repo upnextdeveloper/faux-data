@@ -13,16 +13,8 @@ public class FauxDataApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FauxDataApplication.class, args);
-		Faker faker = new Faker(new Locale("en-US"));
-//		System.out.println(faker.aviation().airport());
-//		System.out.println(faker.aviation().aircraft());
-//		System.out.println(faker.name().firstName());
-//		System.out.println(faker.name().lastName());
-//		System.out.println(faker.name().fullName());
-//		System.out.println(faker.name().nameWithMiddle());
-//		System.out.println(faker.name().username());
-//		System.out.println(faker.name().bloodGroup());
-//		System.out.println(faker.finance().creditCard());
+		Faker f = new Faker();
+		System.out.println(f.music().instrument());
 	}
 
 }

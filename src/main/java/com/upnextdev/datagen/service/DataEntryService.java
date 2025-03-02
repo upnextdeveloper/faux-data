@@ -14,7 +14,7 @@ import com.upnextdev.datagen.output.OutputFileType;
 @Service
 public class DataEntryService {
 
-	public void parseJsonRequest(String body) {
+	public void parseJsonRequest(String body) throws Exception {
 		int numberofCharToremove = 16;
 		int numberofCharToremovefromEnd = 2;
 		String newBody = body.substring(numberofCharToremove);
@@ -29,6 +29,8 @@ public class DataEntryService {
 		List<String> iusRequiredValues = new ArrayList<String>();
 		List<String> rowCountValues = new ArrayList<>();
 		List<String> fileTypeValues = new ArrayList<>();
+		
+		List<String> tableNameValues = new ArrayList<String>();
 
 		values.forEach(v -> {
 			v = v.trim();
@@ -47,12 +49,16 @@ public class DataEntryService {
 			}else if(v.startsWith("fileType")) {
 				v = v.substring(9);
 				fileTypeValues.add(v);
+			}else if(v.startsWith("tableName")) {
+				v = v.substring(10);
+				tableNameValues.add(v);
 			}
 		});
 		
 		Integer rowCount = Integer.parseInt(rowCountValues.get(0));
-		
-		List<DataEntry> entryList = buildDataArrays(columnValues, dataTypeValues, iusRequiredValues);
+		String tableName = tableNameValues.get(0);
+		List<DataEntry> entryList = buildDataArrays(columnValues, dataTypeValues, iusRequiredValues,
+				tableName);
 
 		System.out.println("-------------");
 		
@@ -61,21 +67,22 @@ public class DataEntryService {
 		DataGenerator gen = null;
 		if(fileType.equalsIgnoreCase(OutputFileType.EXCEL_FILE.getFileType())) {
 			gen = new ExcelGenerator();
-			gen.printData(columnValues, entryList, rowCount);
+			gen.printData(columnValues, entryList, rowCount, tableName);
 		}else if(fileType.equalsIgnoreCase(OutputFileType.MYSQL_FILE.getFileType())) {
 			gen = new MySQLGenerator();
-			gen.printData(columnValues, entryList, rowCount);
+			gen.printData(columnValues, entryList, rowCount, tableName);
 		}
 		
 		
 		
 	}
 	
-	private List<DataEntry> buildDataArrays(List<String> columns, List<String> dataTypes, List<String> isRequired) {
+	private List<DataEntry> buildDataArrays(List<String> columns, List<String> dataTypes, List<String> isRequired,
+			String tableName) {
 		int numberofIterations = columns.size();
 		List<DataEntry> dataEntries = new ArrayList<DataEntry>();
 		for(int i = 0; i < numberofIterations; i++) {
-			DataEntry newEntry = new DataEntry(columns.get(i), dataTypes.get(i), isRequired.get(i));
+			DataEntry newEntry = new DataEntry(columns.get(i), dataTypes.get(i), isRequired.get(i), tableName);
 			dataEntries.add(newEntry);
 		}
 		

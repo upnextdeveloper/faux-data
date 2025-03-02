@@ -8,12 +8,12 @@ import java.util.List;
 
 public class MySQLDataOutput implements DataOutput {
 
+	
 	@Override
-	public void createOutputFile(List<String> dataRows, List<String> columnValues) {
-		// TODO Auto-generated method stub
+	public void createOutputFile(List<String> dataRows, List<String> columnValues, String tableName) {
 		String mySqlFileName = "faux-data-mysql-" + System.currentTimeMillis() + ".sql";
-		StringBuilder fileContent = new StringBuilder();
 		File mySQLFile = null;
+		
 		try {
 			mySQLFile = new File(mySqlFileName);
 			
@@ -22,46 +22,46 @@ public class MySQLDataOutput implements DataOutput {
 			}else {
 				FileWriter fileWriter = new FileWriter(mySQLFile);
 				
-				// insert column names
-				fileContent.append("INSERT INTO table (");
-
-				columnValues.forEach(col -> {
-					fileContent.append(col + ",");
-				});
-				fileContent.deleteCharAt(fileContent.length()-1);
-				fileContent.append(")");
-				fileContent.append("\n");
-				
-				// values for the sql file
-				fileContent.append("VALUES ");
-				
-				for(int i=0; i < dataRows.size(); i++) {
-					String[] arr = dataRows.get(i).split(",");
-					fileContent.append("(");
-					for(int j=0; j < arr.length; j++) {
-						fileContent.append("'");
-						fileContent.append(arr[j] + "'" + ",");
+				for(int i =0; i < dataRows.size(); i++) {
+					String insertRow = "";
+					insertRow = insertRow + "INSERT INTO ";
+					insertRow = insertRow + tableName + " (";
+					
+					
+					for(String col: columnValues) {
+						insertRow = insertRow + col + ",";
 					}
-					fileContent.deleteCharAt(fileContent.length()-1);
-					fileContent.append(")");
-					fileContent.append(",");
-					fileContent.append("\n");
+					// remove the last comma
+					insertRow = insertRow.substring(0, insertRow.length() - 1);
+					
+					insertRow = insertRow + ")";
+					
+					// now add in the row
+					insertRow = insertRow + " VALUES";
+					insertRow = insertRow + " (";
+					
+					String[] arr = dataRows.get(i).split(",");
+					for(String arrValue: arr) {
+						insertRow = insertRow + "'" + arrValue + "'";
+						insertRow = insertRow + ",";
+					}
+					insertRow = insertRow.substring(0, insertRow.length() - 1);
+					insertRow = insertRow + ");";
+					
+					System.out.println("Insert Row: " + insertRow);
+					fileWriter.write(insertRow);
+					fileWriter.write("\n");
 				}
-				fileContent.deleteCharAt(fileContent.length()-2);
-				fileContent.append(";");
 				
-				fileWriter.write(fileContent.toString());
-				
-				
-				FileOutputStream os = new FileOutputStream(mySQLFile);
 				fileWriter.close();
-				os.close();
 			}
-		} catch(IOException e) {
+		}
+			
+		catch(IOException e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println("End of SQL File Creation");
+			System.out.println("End of SQL File Creation " + mySqlFileName);
 		}
+		
 	}
-
 }
