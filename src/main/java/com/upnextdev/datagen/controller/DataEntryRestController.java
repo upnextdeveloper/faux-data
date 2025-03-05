@@ -22,6 +22,7 @@ public class DataEntryRestController {
 			dataEntryService.parseJsonRequest(body);
 		}catch(Exception e) {
 			System.out.println("Error processing request");
+			e.printStackTrace();
 		}
 	}
 }

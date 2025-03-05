@@ -10,6 +10,8 @@ import java.util.concurrent.TimeUnit;
 
 import com.github.javafaker.Faker;
 import com.upnextdev.datagen.entity.DataEntry;
+import com.upnextdev.datagen.util.CityStateData;
+import com.upnextdev.datagen.util.CityStateData.CityStateZip;
 
 public abstract class DataGenerator {
 
@@ -17,6 +19,10 @@ public abstract class DataGenerator {
 	// class to print output depending on child class
 	private Faker dataFaker = new Faker(new Locale("en-US"));
 	int newId = dataFaker.number().numberBetween(1, 100000);
+	
+	CityStateData csd = new CityStateData();
+	
+	List<CityStateZip> csdList = csd.getCityStates();
 
 	protected List<String> generateData(List<DataEntry> dataEntries, int rowCount) throws Exception {
 		List<String> dataList = new ArrayList<String>();
@@ -31,9 +37,14 @@ public abstract class DataGenerator {
 
 	private String printRowOfData(List<DataEntry> entries) throws Exception {
 		String row = "";
+		Random random = new Random();
+		int randomCsdIndex = random.nextInt(csdList.size() - 1);
+		
+		CityStateZip randomlyChoosenCsz = csdList.get(randomCsdIndex);
 		for (DataEntry entry : entries) {
 			StringBuilder stringB = new StringBuilder();
-			stringB.append(getRandomData(entry));
+			
+			stringB.append(getRandomData(entry, randomlyChoosenCsz));
 			row = row + "," + stringB.toString();
 		}
 		// remove first comma
@@ -41,11 +52,12 @@ public abstract class DataGenerator {
 		return row;
 	}
 
-	private String getRandomData(DataEntry entry) throws Exception {
+	private String getRandomData(DataEntry entry, CityStateZip randomlyChoosenCsz) throws Exception {
 		String isRequired = entry.getIsRequired();
 		String dataType = entry.getDataType();
 		boolean required = true;
 		String dataReturned = "";
+		
 
 		if (isRequired.equalsIgnoreCase("Y")) {
 			required = true;
@@ -59,7 +71,7 @@ public abstract class DataGenerator {
 			} else {
 				// the column value is not required
 				// therefore it will be generated randomly
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = String.valueOf(newId);
 				} else {
 					dataReturned = "";
@@ -71,7 +83,7 @@ public abstract class DataGenerator {
 			if (required) {
 				dataReturned = pastDate;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = pastDate;
 				} else {
 					dataReturned = "";
@@ -83,7 +95,7 @@ public abstract class DataGenerator {
 			if (required) {
 				dataReturned = firstName;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = firstName;
 				} else {
 					dataReturned = "";
@@ -95,7 +107,7 @@ public abstract class DataGenerator {
 			if (required) {
 				dataReturned = middleName;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = middleName;
 				} else {
 					dataReturned = "";
@@ -107,7 +119,7 @@ public abstract class DataGenerator {
 			if (required) {
 				dataReturned = lastName;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = lastName;
 				} else {
 					dataReturned = "";
@@ -119,7 +131,7 @@ public abstract class DataGenerator {
 			if (required) {
 				dataReturned = fullName;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = fullName;
 				} else {
 					dataReturned = "";
@@ -131,7 +143,7 @@ public abstract class DataGenerator {
 			if (required) {
 				dataReturned = fullNameWithMiddle;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = fullNameWithMiddle;
 				} else {
 					dataReturned = "";
@@ -142,7 +154,7 @@ public abstract class DataGenerator {
 			if (required) {
 				dataReturned = username;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = username;
 				} else {
 					dataReturned = "";
@@ -153,7 +165,7 @@ public abstract class DataGenerator {
 			if (required) {
 				dataReturned = futureDate;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = futureDate;
 				} else {
 					dataReturned = "";
@@ -164,29 +176,29 @@ public abstract class DataGenerator {
 			if (required) {
 				dataReturned = street;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = street;
 				} else {
 					dataReturned = "";
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.CITY.getDataType())) {
-			String city = dataFaker.address().city().toString();
+			String city = randomlyChoosenCsz.getCity();
 			if (required) {
 				dataReturned = city;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = city;
 				} else {
 					dataReturned = "";
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.STATE.getDataType())) {
-			String state = dataFaker.address().state().toString();
+			String state = randomlyChoosenCsz.getStateName();
 			if (required) {
 				dataReturned = state;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = state;
 				} else {
 					dataReturned = "";
@@ -194,22 +206,32 @@ public abstract class DataGenerator {
 			}
 
 		} else if (dataType.equalsIgnoreCase(DataType.STATE_ABBR.getDataType())) {
-			String stateAbb = dataFaker.address().stateAbbr().toString();
+			String stateAbb = randomlyChoosenCsz.getStateAbbr();
 			if (required) {
 				dataReturned = stateAbb;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = stateAbb;
 				} else {
 					dataReturned = "";
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.ZIP_CODE.getDataType())) {
-			String zipCode = dataFaker.address().zipCode().toString();
+			String[] randomZipCodes = randomlyChoosenCsz.getZipCode().split("\\s+");
+			Random random = new Random();
+			int randomSelectedZipCodeIndex = 0;
+			if(randomZipCodes.length - 1 > 0) {
+				randomSelectedZipCodeIndex = random.nextInt(randomZipCodes.length - 1);
+			}
+			String zipCode = randomZipCodes[randomSelectedZipCodeIndex];
+			Integer parsedZipCode = (int) Double.parseDouble(zipCode);
+			
+			
+			zipCode = parsedZipCode.toString();
 			if (required) {
 				dataReturned = zipCode;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = zipCode;
 				} else {
 					dataReturned = "";
@@ -220,7 +242,7 @@ public abstract class DataGenerator {
 			if (required) {
 				dataReturned = truefalse;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = truefalse;
 				} else {
 					dataReturned = "";
@@ -231,7 +253,7 @@ public abstract class DataGenerator {
 			if (required) {
 				dataReturned = gender;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = gender;
 				} else {
 					dataReturned = "";
@@ -243,7 +265,7 @@ public abstract class DataGenerator {
 			if (required) {
 				dataReturned = birthday;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = birthday;
 				} else {
 					dataReturned = "";
@@ -254,7 +276,7 @@ public abstract class DataGenerator {
 			if (required) {
 				dataReturned = moneyAmount;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = moneyAmount;
 				} else {
 					dataReturned = "";
@@ -265,7 +287,7 @@ public abstract class DataGenerator {
 			if (required) {
 				dataReturned = moneyAmount;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = moneyAmount;
 				} else {
 					dataReturned = "";
@@ -276,7 +298,7 @@ public abstract class DataGenerator {
 			if (required) {
 				dataReturned = moneyAmount;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = moneyAmount;
 				} else {
 					dataReturned = "";
@@ -287,7 +309,7 @@ public abstract class DataGenerator {
 			if (required) {
 				dataReturned = email;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = email;
 				} else {
 					dataReturned = "";
@@ -298,7 +320,7 @@ public abstract class DataGenerator {
 			if (required) {
 				dataReturned = phoneNumber;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = phoneNumber;
 				} else {
 					dataReturned = "";
@@ -309,7 +331,7 @@ public abstract class DataGenerator {
 			if (required) {
 				dataReturned = race;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = race;
 				} else {
 					dataReturned = "";
@@ -320,7 +342,7 @@ public abstract class DataGenerator {
 			if (required) {
 				dataReturned = marital;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = marital;
 				} else {
 					dataReturned = "";
@@ -331,7 +353,7 @@ public abstract class DataGenerator {
 			if (required) {
 				dataReturned = education;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = education;
 				} else {
 					dataReturned = "";
@@ -342,7 +364,7 @@ public abstract class DataGenerator {
 			if (required) {
 				dataReturned = education;
 			} else {
-				if (addData()) {
+				if (shouldAddData()) {
 					dataReturned = education;
 				} else {
 					dataReturned = "";
@@ -352,14 +374,14 @@ public abstract class DataGenerator {
 			System.out.println(dataType + " does not exist");
 			throw new Exception("Data type: " + dataType + " does not exist");
 		}
-
+		
 		return dataReturned;
 	}
 	
 	abstract public void printData(List <String> columnValues, List<DataEntry> e, int count, String tableName) throws Exception;
 	// if a column is optional, it will generate data based on
 	// if the below value is returned true
-	private boolean addData() {
+	private boolean shouldAddData() {
 		Random random = new Random();
 		return random.nextBoolean();
 	}
