@@ -30,6 +30,7 @@ public class CityStateData {
 			Iterator<Row> rowIterator = sheet.iterator();
 
 			while (rowIterator.hasNext()) {
+				// skip the first one
 				Row row = rowIterator.next();
 				
 				CityStateZip csz = new CityStateZip();

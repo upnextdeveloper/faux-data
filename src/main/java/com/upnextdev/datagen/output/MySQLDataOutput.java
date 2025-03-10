@@ -42,13 +42,12 @@ public class MySQLDataOutput implements DataOutput {
 					
 					String[] arr = dataRows.get(i).split(",");
 					for(String arrValue: arr) {
-						insertRow = insertRow + "'" + arrValue + "'";
+						insertRow = insertRow + "\"" + arrValue + "\"";
 						insertRow = insertRow + ",";
 					}
 					insertRow = insertRow.substring(0, insertRow.length() - 1);
 					insertRow = insertRow + ");";
 					
-					System.out.println("Insert Row: " + insertRow);
 					fileWriter.write(insertRow);
 					fileWriter.write("\n");
 				}

@@ -1,6 +1,9 @@
 package com.upnextdev.datagen.generator;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Year;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,6 +15,7 @@ import com.github.javafaker.Faker;
 import com.upnextdev.datagen.entity.DataEntry;
 import com.upnextdev.datagen.util.CityStateData;
 import com.upnextdev.datagen.util.CityStateData.CityStateZip;
+import com.upnextdev.datagen.util.GenderedNames;
 
 public abstract class DataGenerator {
 
@@ -20,14 +24,30 @@ public abstract class DataGenerator {
 	private Faker dataFaker = new Faker(new Locale("en-US"));
 	int newId = dataFaker.number().numberBetween(1, 100000);
 	
+	GenderedNames genderedNames = new GenderedNames();
 	CityStateData csd = new CityStateData();
-	
 	List<CityStateZip> csdList = csd.getCityStates();
+	Date randomBirthdayDate = null;
+	int randomAgeFromBirthday = 0;
+	String randomGender = "";
+	
+	public DataGenerator() {
+		// generate a random date by default (for birthday and create an age based off of it)
+
+	}
 
 	protected List<String> generateData(List<DataEntry> dataEntries, int rowCount) throws Exception {
 		List<String> dataList = new ArrayList<String>();
 
 		for (int i = 0; i < rowCount; i++) {
+			randomBirthdayDate = dataFaker.date().birthday(0, 120);
+			LocalDate localDateBday = randomBirthdayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			int birthdayYear = localDateBday.getYear();
+			int currentYear = Year.now().getValue();
+			randomAgeFromBirthday = currentYear - birthdayYear;
+			
+			randomGender = dataFaker.demographic().sex();
+			
 			dataList.add(printRowOfData(dataEntries));
 			newId++;
 		}
@@ -91,6 +111,14 @@ public abstract class DataGenerator {
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.FIRST_NAME.getDataType())) {
 			String firstName = dataFaker.name().firstName();
+			if(randomGender.equalsIgnoreCase("Female")){
+				firstName = genderedNames.getRandomFemaleName();
+			}else if(randomGender.equalsIgnoreCase("Male")) {
+				firstName = genderedNames.getRandomMaleName();
+				// gender is optional non binary
+			}else {
+				firstName = dataFaker.name().firstName();
+			}
 			firstName = firstName.replaceAll("\'","");
 			if (required) {
 				dataReturned = firstName;
@@ -103,6 +131,14 @@ public abstract class DataGenerator {
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.MIDDLE_NAME.getDataType())) {
 			String middleName = dataFaker.name().firstName();
+			if(randomGender.equalsIgnoreCase("Female")){
+				middleName = genderedNames.getRandomFemaleName();
+			}else if(randomGender.equalsIgnoreCase("Male")) {
+				middleName = genderedNames.getRandomMaleName();
+				// gender is optional non binary
+			}else {
+				middleName = dataFaker.name().firstName();
+			}
 			middleName = middleName.replaceAll("\'","");
 			if (required) {
 				dataReturned = middleName;
@@ -121,30 +157,6 @@ public abstract class DataGenerator {
 			} else {
 				if (shouldAddData()) {
 					dataReturned = lastName;
-				} else {
-					dataReturned = "";
-				}
-			}
-		} else if (dataType.equalsIgnoreCase(DataType.FULL_NAME.getDataType())) {
-			String fullName = dataFaker.name().lastName();
-			fullName = fullName.replaceAll("\'","");
-			if (required) {
-				dataReturned = fullName;
-			} else {
-				if (shouldAddData()) {
-					dataReturned = fullName;
-				} else {
-					dataReturned = "";
-				}
-			}
-		} else if (dataType.equalsIgnoreCase(DataType.FULL_NAME_WMIDDLE.getDataType())) {
-			String fullNameWithMiddle = dataFaker.name().nameWithMiddle();
-			fullNameWithMiddle = fullNameWithMiddle.replaceAll("\'","");
-			if (required) {
-				dataReturned = fullNameWithMiddle;
-			} else {
-				if (shouldAddData()) {
-					dataReturned = fullNameWithMiddle;
 				} else {
 					dataReturned = "";
 				}
@@ -224,10 +236,14 @@ public abstract class DataGenerator {
 				randomSelectedZipCodeIndex = random.nextInt(randomZipCodes.length - 1);
 			}
 			String zipCode = randomZipCodes[randomSelectedZipCodeIndex];
-			Integer parsedZipCode = (int) Double.parseDouble(zipCode);
+			if(zipCode.trim() != "") {
+				Integer parsedZipCode = (int) Double.parseDouble(zipCode);
+				zipCode = parsedZipCode.toString();
+			}else {
+				zipCode = "";
+			}
 			
 			
-			zipCode = parsedZipCode.toString();
 			if (required) {
 				dataReturned = zipCode;
 			} else {
@@ -249,7 +265,8 @@ public abstract class DataGenerator {
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.GENDER.getDataType())) {
-			String gender = dataFaker.demographic().sex();
+			String gender = randomGender;
+
 			if (required) {
 				dataReturned = gender;
 			} else {
@@ -261,12 +278,23 @@ public abstract class DataGenerator {
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.BIRTHDAY.getDataType())) {
 			// String birthday = dataFaker.date().birthday().toString();
-			String birthday = formmatedDate(dataFaker.date().birthday());
+			String birthday = formmatedDate(randomBirthdayDate);
 			if (required) {
 				dataReturned = birthday;
 			} else {
 				if (shouldAddData()) {
 					dataReturned = birthday;
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.AGE.getDataType())) {
+			String age = String.valueOf(randomAgeFromBirthday);
+			if (required) {
+				dataReturned = age;
+			} else {
+				if (shouldAddData()) {
+					dataReturned = age;
 				} else {
 					dataReturned = "";
 				}
@@ -338,7 +366,14 @@ public abstract class DataGenerator {
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.MARITAL_STATUS.getDataType())) {
-			String marital = dataFaker.demographic().maritalStatus();
+			String marital = "";
+			
+			if(randomAgeFromBirthday < 18) {
+				marital = "Never married";
+			}else {
+				marital = dataFaker.demographic().maritalStatus();
+			}
+			
 			if (required) {
 				dataReturned = marital;
 			} else {
@@ -349,7 +384,18 @@ public abstract class DataGenerator {
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.CURRENT_EDUCATION.getDataType())) {
-			String education = dataFaker.demographic().educationalAttainment();
+			String education = "";
+			if(randomAgeFromBirthday < 5) {
+				education = "No schooling completed";
+			} else if(randomAgeFromBirthday == 5) {
+				education = "Kindergarten";
+			}
+			else if(randomAgeFromBirthday > 5 && randomAgeFromBirthday < 18) {
+				education = "Grade 1 though 11";
+			} else {
+				education = dataFaker.demographic().educationalAttainment();
+			}
+			
 			if (required) {
 				dataReturned = education;
 			} else {
@@ -359,18 +405,7 @@ public abstract class DataGenerator {
 					dataReturned = "";
 				}
 			}
-		} else if (dataType.equalsIgnoreCase(DataType.AGE.getDataType())) {
-			String education = String.valueOf(dataFaker.number().numberBetween(0, 110));
-			if (required) {
-				dataReturned = education;
-			} else {
-				if (shouldAddData()) {
-					dataReturned = education;
-				} else {
-					dataReturned = "";
-				}
-			}
-		} else {
+		}  else {
 			System.out.println(dataType + " does not exist");
 			throw new Exception("Data type: " + dataType + " does not exist");
 		}
