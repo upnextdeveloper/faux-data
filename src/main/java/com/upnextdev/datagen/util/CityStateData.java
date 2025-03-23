@@ -35,11 +35,11 @@ public class CityStateData {
 				
 				CityStateZip csz = new CityStateZip();
 				// now take the first (0) cell for the city name
-				csz.setCity(row.getCell(0).toString());
+				csz.setCity(row.getCell(0).toString().replace(",", " "));
 				// the third (2) cell for the state abbr
-				csz.setStateAbbr(row.getCell(2).toString());
+				csz.setStateAbbr(row.getCell(2).toString().replace(",", " "));
 				// take the 4th (3) for the state name
-				csz.setStateName(row.getCell(3).toString());
+				csz.setStateName(row.getCell(3).toString().replace(",", " "));
 				// take the 16th (15) for the zip codes
 				csz.setZipCode(row.getCell(15).toString());
 				

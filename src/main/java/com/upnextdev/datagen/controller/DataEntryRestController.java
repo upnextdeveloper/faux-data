@@ -17,12 +17,13 @@ public class DataEntryRestController {
 	@Autowired DataEntryService dataEntryService;
 	
 	@PostMapping("/entry")
-	public void readDataEntry(@RequestBody String body) throws Exception{
+	public String readDataEntry(@RequestBody String body) throws Exception{
 		try {
 			dataEntryService.parseJsonRequest(body);
+			return "success";
 		}catch(Exception e) {
 			System.out.println("Error processing request");
-			e.printStackTrace();
+			return "redirect:/";
 		}
 	}
 }

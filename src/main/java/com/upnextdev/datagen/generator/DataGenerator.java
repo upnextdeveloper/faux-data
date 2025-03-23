@@ -31,9 +31,12 @@ public abstract class DataGenerator {
 	int randomAgeFromBirthday = 0;
 	String randomGender = "";
 	
+	String firstName = "";
+	String middleName = "";
+	String lastName = "";
+	
 	public DataGenerator() {
 		// generate a random date by default (for birthday and create an age based off of it)
-
 	}
 
 	protected List<String> generateData(List<DataEntry> dataEntries, int rowCount) throws Exception {
@@ -47,6 +50,10 @@ public abstract class DataGenerator {
 			randomAgeFromBirthday = currentYear - birthdayYear;
 			
 			randomGender = dataFaker.demographic().sex();
+			
+			firstName = getGenderedName(randomGender);
+			middleName = getGenderedName(randomGender);
+			lastName = dataFaker.name().lastName();
 			
 			dataList.add(printRowOfData(dataEntries));
 			newId++;
@@ -110,16 +117,16 @@ public abstract class DataGenerator {
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.FIRST_NAME.getDataType())) {
-			String firstName = dataFaker.name().firstName();
-			if(randomGender.equalsIgnoreCase("Female")){
-				firstName = genderedNames.getRandomFemaleName();
-			}else if(randomGender.equalsIgnoreCase("Male")) {
-				firstName = genderedNames.getRandomMaleName();
-				// gender is optional non binary
-			}else {
-				firstName = dataFaker.name().firstName();
-			}
-			firstName = firstName.replaceAll("\'","");
+//			String firstName = dataFaker.name().firstName();
+//			if(randomGender.equalsIgnoreCase("Female")){
+//				firstName = genderedNames.getRandomFemaleName();
+//			}else if(randomGender.equalsIgnoreCase("Male")) {
+//				firstName = genderedNames.getRandomMaleName();
+//				// gender is optional non binary
+//			}else {
+//				firstName = dataFaker.name().firstName();
+//			}
+//			firstName = firstName.replaceAll("\'","");
 			if (required) {
 				dataReturned = firstName;
 			} else {
@@ -130,16 +137,16 @@ public abstract class DataGenerator {
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.MIDDLE_NAME.getDataType())) {
-			String middleName = dataFaker.name().firstName();
-			if(randomGender.equalsIgnoreCase("Female")){
-				middleName = genderedNames.getRandomFemaleName();
-			}else if(randomGender.equalsIgnoreCase("Male")) {
-				middleName = genderedNames.getRandomMaleName();
-				// gender is optional non binary
-			}else {
-				middleName = dataFaker.name().firstName();
-			}
-			middleName = middleName.replaceAll("\'","");
+//			String middleName = dataFaker.name().firstName();
+//			if(randomGender.equalsIgnoreCase("Female")){
+//				middleName = genderedNames.getRandomFemaleName();
+//			}else if(randomGender.equalsIgnoreCase("Male")) {
+//				middleName = genderedNames.getRandomMaleName();
+//				// gender is optional non binary
+//			}else {
+//				middleName = dataFaker.name().firstName();
+//			}
+//			middleName = middleName.replaceAll("\'","");
 			if (required) {
 				dataReturned = middleName;
 			} else {
@@ -150,8 +157,8 @@ public abstract class DataGenerator {
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.LAST_NAME.getDataType())) {
-			String lastName = dataFaker.name().lastName();
-			lastName = lastName.replaceAll("\'","");
+//			String lastName = dataFaker.name().lastName();
+//			lastName = lastName.replaceAll("\'","");
 			if (required) {
 				dataReturned = lastName;
 			} else {
@@ -162,7 +169,7 @@ public abstract class DataGenerator {
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.USERNAME.getDataType())) {
-			String username = dataFaker.name().username();
+			String username = getFauxUserName(firstName, lastName);
 			if (required) {
 				dataReturned = username;
 			} else {
@@ -333,7 +340,7 @@ public abstract class DataGenerator {
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.EMAIL.getDataType())) {
-			String email = dataFaker.internet().emailAddress();
+			String email = getFauxEmailAddress(firstName, lastName);
 			if (required) {
 				dataReturned = email;
 			} else {
@@ -425,5 +432,59 @@ public abstract class DataGenerator {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String formmattedDate = formatter.format(date);
 		return formmattedDate;
+	}
+	
+	private String getGenderedName(String randomGender) {
+		String firstName = "";
+		if(randomGender.equalsIgnoreCase("Female")) {
+			firstName = genderedNames.getRandomFemaleName();
+		}else if(randomGender.equalsIgnoreCase("Male")) {
+			firstName = genderedNames.getRandomMaleName();
+		}else {
+			firstName = dataFaker.name().firstName();
+		}
+		firstName = firstName.replaceAll("\'","");
+		
+		return firstName;
+	}
+	
+	private String getFauxEmailAddress(String firstName, String lastName) {
+		String emailAddress = "";
+		if(firstName.trim().equalsIgnoreCase("")) {
+			emailAddress = emailAddress + dataFaker.name().firstName();
+		}else {
+			emailAddress = emailAddress + firstName;
+		}
+		
+		emailAddress = emailAddress + ".";
+		
+		if(lastName.trim().equalsIgnoreCase("")) {
+			emailAddress = emailAddress + dataFaker.name().lastName();
+		}else {
+			emailAddress = emailAddress + lastName;
+		}
+		
+		emailAddress = emailAddress + "@fauxemail.com";
+		
+		return emailAddress;
+	}
+	
+	private String getFauxUserName(String firstName, String lastName) {
+		String userName = "";
+		if(firstName.trim().equalsIgnoreCase("")) {
+			userName = userName + dataFaker.name().firstName();
+		}else {
+			userName = userName + firstName;
+		}
+		
+		userName = userName + ".";
+		
+		if(lastName.trim().equalsIgnoreCase("")) {
+			userName = userName + dataFaker.name().lastName();
+		}else {
+			userName = userName + lastName;
+		}
+		
+		return userName;
 	}
 }

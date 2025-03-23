@@ -9,8 +9,6 @@ public class ExcelGenerator extends DataGenerator {
 
 	@Override
 	public void printData(List<String> columnValues, List<DataEntry> e, int count, String tableName) throws Exception {
-		// TODO Auto-generated method stub
-		generateData(e, count);
 
 		ExcelDataOutput edo = new ExcelDataOutput();
 		edo.createOutputFile(generateData(e, count), columnValues, tableName);
