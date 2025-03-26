@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.github.javafaker.Faker;
 import com.upnextdev.datagen.entity.DataEntry;
+import com.upnextdev.datagen.entity.DataFakerEntryRow;
 import com.upnextdev.datagen.util.CityStateData;
 import com.upnextdev.datagen.util.CityStateData.CityStateZip;
 import com.upnextdev.datagen.util.GenderedNames;
@@ -21,40 +22,21 @@ public abstract class DataGenerator {
 
 	// class to do all the generation tasks
 	// class to print output depending on child class
-	private Faker dataFaker = new Faker(new Locale("en-US"));
-	int newId = dataFaker.number().numberBetween(1, 100000);
-	
-	GenderedNames genderedNames = new GenderedNames();
-	CityStateData csd = new CityStateData();
-	List<CityStateZip> csdList = csd.getCityStates();
-	Date randomBirthdayDate = null;
-	int randomAgeFromBirthday = 0;
-	String randomGender = "";
-	
-	String firstName = "";
-	String middleName = "";
-	String lastName = "";
+	private Faker githubFaker = new Faker(new Locale("en-US"));
+	private net.datafaker.Faker newFaker = new net.datafaker.Faker();
+	private CityStateData csd = new CityStateData();
+	private GenderedNames genderedNames = new GenderedNames();
+	int newId = githubFaker.number().numberBetween(1, 100000);
 	
 	public DataGenerator() {
 		// generate a random date by default (for birthday and create an age based off of it)
+		
 	}
 
 	protected List<String> generateData(List<DataEntry> dataEntries, int rowCount) throws Exception {
 		List<String> dataList = new ArrayList<String>();
 
 		for (int i = 0; i < rowCount; i++) {
-			randomBirthdayDate = dataFaker.date().birthday(0, 120);
-			LocalDate localDateBday = randomBirthdayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			int birthdayYear = localDateBday.getYear();
-			int currentYear = Year.now().getValue();
-			randomAgeFromBirthday = currentYear - birthdayYear;
-			
-			randomGender = dataFaker.demographic().sex();
-			
-			firstName = getGenderedName(randomGender);
-			middleName = getGenderedName(randomGender);
-			lastName = dataFaker.name().lastName();
-			
 			dataList.add(printRowOfData(dataEntries));
 			newId++;
 		}
@@ -63,15 +45,11 @@ public abstract class DataGenerator {
 	}
 
 	private String printRowOfData(List<DataEntry> entries) throws Exception {
+		DataFakerEntryRow dfer = new DataFakerEntryRow(githubFaker, newFaker, csd, genderedNames);
 		String row = "";
-		Random random = new Random();
-		int randomCsdIndex = random.nextInt(csdList.size() - 1);
-		
-		CityStateZip randomlyChoosenCsz = csdList.get(randomCsdIndex);
 		for (DataEntry entry : entries) {
 			StringBuilder stringB = new StringBuilder();
-			
-			stringB.append(getRandomData(entry, randomlyChoosenCsz));
+			stringB.append(getRandomData(entry, dfer));
 			row = row + "," + stringB.toString();
 		}
 		// remove first comma
@@ -79,7 +57,7 @@ public abstract class DataGenerator {
 		return row;
 	}
 
-	private String getRandomData(DataEntry entry, CityStateZip randomlyChoosenCsz) throws Exception {
+	private String getRandomData(DataEntry entry, DataFakerEntryRow dfer) throws Exception {
 		String isRequired = entry.getIsRequired();
 		String dataType = entry.getDataType();
 		boolean required = true;
@@ -106,7 +84,7 @@ public abstract class DataGenerator {
 			}
 
 		} else if (dataType.equalsIgnoreCase(DataType.PAST_DATE.getDataType())) {
-			String pastDate = formmatedDate(dataFaker.date().past(18250, TimeUnit.DAYS));
+			String pastDate = dfer.getPastDate();
 			if (required) {
 				dataReturned = pastDate;
 			} else {
@@ -117,297 +95,222 @@ public abstract class DataGenerator {
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.FIRST_NAME.getDataType())) {
-//			String firstName = dataFaker.name().firstName();
-//			if(randomGender.equalsIgnoreCase("Female")){
-//				firstName = genderedNames.getRandomFemaleName();
-//			}else if(randomGender.equalsIgnoreCase("Male")) {
-//				firstName = genderedNames.getRandomMaleName();
-//				// gender is optional non binary
-//			}else {
-//				firstName = dataFaker.name().firstName();
-//			}
-//			firstName = firstName.replaceAll("\'","");
 			if (required) {
-				dataReturned = firstName;
+				dataReturned = dfer.getFirstName();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = firstName;
+					dataReturned = dfer.getFirstName();
 				} else {
 					dataReturned = "";
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.MIDDLE_NAME.getDataType())) {
-//			String middleName = dataFaker.name().firstName();
-//			if(randomGender.equalsIgnoreCase("Female")){
-//				middleName = genderedNames.getRandomFemaleName();
-//			}else if(randomGender.equalsIgnoreCase("Male")) {
-//				middleName = genderedNames.getRandomMaleName();
-//				// gender is optional non binary
-//			}else {
-//				middleName = dataFaker.name().firstName();
-//			}
-//			middleName = middleName.replaceAll("\'","");
 			if (required) {
-				dataReturned = middleName;
+				dataReturned = dfer.getMiddleName();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = middleName;
+					dataReturned = dfer.getMiddleName();
 				} else {
 					dataReturned = "";
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.LAST_NAME.getDataType())) {
-//			String lastName = dataFaker.name().lastName();
-//			lastName = lastName.replaceAll("\'","");
 			if (required) {
-				dataReturned = lastName;
+				dataReturned = dfer.getLastName();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = lastName;
+					dataReturned = dfer.getLastName();
 				} else {
 					dataReturned = "";
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.USERNAME.getDataType())) {
-			String username = getFauxUserName(firstName, lastName);
 			if (required) {
-				dataReturned = username;
+				dataReturned = dfer.getUserName();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = username;
+					dataReturned = dfer.getUserName();
 				} else {
 					dataReturned = "";
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.FUTURE_DATE.getDataType())) {
-			String futureDate = formmatedDate(dataFaker.date().future(18250, TimeUnit.DAYS));
 			if (required) {
-				dataReturned = futureDate;
+				dataReturned = dfer.getFutureDate();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = futureDate;
+					dataReturned = dfer.getFutureDate();
 				} else {
 					dataReturned = "";
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.STREET.getDataType())) {
-			String street = dataFaker.address().streetAddress().toString();
 			if (required) {
-				dataReturned = street;
+				dataReturned = dfer.getStreet();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = street;
+					dataReturned = dfer.getStreet();
 				} else {
 					dataReturned = "";
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.CITY.getDataType())) {
-			String city = randomlyChoosenCsz.getCity();
 			if (required) {
-				dataReturned = city;
+				dataReturned = dfer.getCity();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = city;
+					dataReturned = dfer.getCity();
 				} else {
 					dataReturned = "";
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.STATE.getDataType())) {
-			String state = randomlyChoosenCsz.getStateName();
 			if (required) {
-				dataReturned = state;
+				dataReturned = dfer.getState();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = state;
+					dataReturned = dfer.getState();
 				} else {
 					dataReturned = "";
 				}
 			}
 
 		} else if (dataType.equalsIgnoreCase(DataType.STATE_ABBR.getDataType())) {
-			String stateAbb = randomlyChoosenCsz.getStateAbbr();
 			if (required) {
-				dataReturned = stateAbb;
+				dataReturned = dfer.getStateAbbr();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = stateAbb;
+					dataReturned = dfer.getStateAbbr();
 				} else {
 					dataReturned = "";
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.ZIP_CODE.getDataType())) {
-			String[] randomZipCodes = randomlyChoosenCsz.getZipCode().split("\\s+");
-			Random random = new Random();
-			int randomSelectedZipCodeIndex = 0;
-			if(randomZipCodes.length - 1 > 0) {
-				randomSelectedZipCodeIndex = random.nextInt(randomZipCodes.length - 1);
-			}
-			String zipCode = randomZipCodes[randomSelectedZipCodeIndex];
-			if(zipCode.trim() != "") {
-				Integer parsedZipCode = (int) Double.parseDouble(zipCode);
-				zipCode = parsedZipCode.toString();
-			}else {
-				zipCode = "";
-			}
-			
-			
 			if (required) {
-				dataReturned = zipCode;
+				dataReturned = dfer.getZipCode();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = zipCode;
+					dataReturned = dfer.getZipCode();
 				} else {
 					dataReturned = "";
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.TRUE_FALSE.getDataType())) {
-			String truefalse = String.valueOf(dataFaker.bool().bool());
 			if (required) {
-				dataReturned = truefalse;
+				dataReturned = dfer.getTrueorFalse();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = truefalse;
+					dataReturned = dfer.getTrueorFalse();
 				} else {
 					dataReturned = "";
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.GENDER.getDataType())) {
-			String gender = randomGender;
-
 			if (required) {
-				dataReturned = gender;
+				dataReturned = dfer.getGender();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = gender;
+					dataReturned = dfer.getGender();
 				} else {
 					dataReturned = "";
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.BIRTHDAY.getDataType())) {
-			// String birthday = dataFaker.date().birthday().toString();
-			String birthday = formmatedDate(randomBirthdayDate);
 			if (required) {
-				dataReturned = birthday;
+				dataReturned = dfer.getBirthday();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = birthday;
+					dataReturned = dfer.getBirthday();
 				} else {
 					dataReturned = "";
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.AGE.getDataType())) {
-			String age = String.valueOf(randomAgeFromBirthday);
 			if (required) {
-				dataReturned = age;
+				dataReturned = dfer.getAge();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = age;
+					dataReturned = dfer.getAge();
 				} else {
 					dataReturned = "";
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.MONEY_POS.getDataType())) {
-			String moneyAmount = String.valueOf(dataFaker.number().randomDouble(2, 0, 10000));
 			if (required) {
-				dataReturned = moneyAmount;
+				dataReturned = dfer.getMoneyPos();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = moneyAmount;
+					dataReturned = dfer.getMoneyPos();
 				} else {
 					dataReturned = "";
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.MONEY_POSNEG.getDataType())) {
-			String moneyAmount = String.valueOf(dataFaker.number().randomDouble(2, -1000, 10000));
 			if (required) {
-				dataReturned = moneyAmount;
+				dataReturned = dfer.getMoneyPosNeg();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = moneyAmount;
+					dataReturned = dfer.getMoneyPosNeg();
 				} else {
 					dataReturned = "";
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.POSITIVE_NUM.getDataType())) {
-			String moneyAmount = String.valueOf(dataFaker.number().numberBetween(0, 50000));
 			if (required) {
-				dataReturned = moneyAmount;
+				dataReturned = dfer.getPositiveNum();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = moneyAmount;
+					dataReturned = dfer.getPositiveNum();
 				} else {
 					dataReturned = "";
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.EMAIL.getDataType())) {
-			String email = getFauxEmailAddress(firstName, lastName);
 			if (required) {
-				dataReturned = email;
+				dataReturned = dfer.getEmail();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = email;
+					dataReturned = dfer.getEmail();
 				} else {
 					dataReturned = "";
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.PHONE_NUM.getDataType())) {
-			String phoneNumber = dataFaker.phoneNumber().cellPhone();
 			if (required) {
-				dataReturned = phoneNumber;
+				dataReturned = dfer.getPhoneNum();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = phoneNumber;
+					dataReturned = dfer.getPhoneNum();
 				} else {
 					dataReturned = "";
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.RACE.getDataType())) {
-			String race = dataFaker.demographic().race();
 			if (required) {
-				dataReturned = race;
+				dataReturned = dfer.getRace();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = race;
+					dataReturned = dfer.getRace();
 				} else {
 					dataReturned = "";
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.MARITAL_STATUS.getDataType())) {
-			String marital = "";
-			
-			if(randomAgeFromBirthday < 18) {
-				marital = "Never married";
-			}else {
-				marital = dataFaker.demographic().maritalStatus();
-			}
-			
 			if (required) {
-				dataReturned = marital;
+				dataReturned = dfer.getMaritalStatus();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = marital;
+					dataReturned = dfer.getMaritalStatus();
 				} else {
 					dataReturned = "";
 				}
 			}
 		} else if (dataType.equalsIgnoreCase(DataType.CURRENT_EDUCATION.getDataType())) {
-			String education = "";
-			if(randomAgeFromBirthday < 5) {
-				education = "No schooling completed";
-			} else if(randomAgeFromBirthday == 5) {
-				education = "Kindergarten";
-			}
-			else if(randomAgeFromBirthday > 5 && randomAgeFromBirthday < 18) {
-				education = "Grade 1 though 11";
-			} else {
-				education = dataFaker.demographic().educationalAttainment();
-			}
-			
 			if (required) {
-				dataReturned = education;
+				dataReturned = dfer.getCurrentEducation();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = education;
+					dataReturned = dfer.getCurrentEducation();
 				} else {
 					dataReturned = "";
 				}
@@ -427,64 +330,5 @@ public abstract class DataGenerator {
 		Random random = new Random();
 		return random.nextBoolean();
 	}
-
-	private String formmatedDate(Date date) {
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		String formmattedDate = formatter.format(date);
-		return formmattedDate;
-	}
 	
-	private String getGenderedName(String randomGender) {
-		String firstName = "";
-		if(randomGender.equalsIgnoreCase("Female")) {
-			firstName = genderedNames.getRandomFemaleName();
-		}else if(randomGender.equalsIgnoreCase("Male")) {
-			firstName = genderedNames.getRandomMaleName();
-		}else {
-			firstName = dataFaker.name().firstName();
-		}
-		firstName = firstName.replaceAll("\'","");
-		
-		return firstName;
-	}
-	
-	private String getFauxEmailAddress(String firstName, String lastName) {
-		String emailAddress = "";
-		if(firstName.trim().equalsIgnoreCase("")) {
-			emailAddress = emailAddress + dataFaker.name().firstName();
-		}else {
-			emailAddress = emailAddress + firstName;
-		}
-		
-		emailAddress = emailAddress + ".";
-		
-		if(lastName.trim().equalsIgnoreCase("")) {
-			emailAddress = emailAddress + dataFaker.name().lastName();
-		}else {
-			emailAddress = emailAddress + lastName;
-		}
-		
-		emailAddress = emailAddress + "@fauxemail.com";
-		
-		return emailAddress;
-	}
-	
-	private String getFauxUserName(String firstName, String lastName) {
-		String userName = "";
-		if(firstName.trim().equalsIgnoreCase("")) {
-			userName = userName + dataFaker.name().firstName();
-		}else {
-			userName = userName + firstName;
-		}
-		
-		userName = userName + ".";
-		
-		if(lastName.trim().equalsIgnoreCase("")) {
-			userName = userName + dataFaker.name().lastName();
-		}else {
-			userName = userName + lastName;
-		}
-		
-		return userName;
-	}
 }

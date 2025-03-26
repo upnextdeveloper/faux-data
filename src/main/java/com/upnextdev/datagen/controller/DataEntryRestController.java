@@ -23,6 +23,7 @@ public class DataEntryRestController {
 			return "success";
 		}catch(Exception e) {
 			System.out.println("Error processing request");
+			System.out.println(e);
 			return "redirect:/";
 		}
 	}
