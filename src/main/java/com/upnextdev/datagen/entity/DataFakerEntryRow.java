@@ -24,8 +24,22 @@ public class DataFakerEntryRow {
 	private String fullName;
 	private String fullNameWithMiddle;
 	private String userName;
-	private String pastDate;
-	private String futureDate;
+	private String pastDate2Days;
+	private String pastDate1Week;
+	private String pastDate1Month;
+	private String pastDate6Months;
+	private String pastDate1Year;
+	private String pastDate10Years;
+	private String pastDate25Years;
+	private String pastDate50Years;
+	private String futureDate2Days;
+	private String futureDate1Week;
+	private String futureDate1Month;
+	private String futureDate6Months;
+	private String futureDate1Year;
+	private String futureDate10Years;
+	private String futureDate25Years;
+	private String futureDate50Years;
 	private String street;
 	private String city;
 	private String state;
@@ -78,10 +92,24 @@ public class DataFakerEntryRow {
 		setCurrentEducation(determineEducationStatus(githubDataFaker, randomAgeFromBirthday));
 		
 		// dates
-		String pastDate = formmatedDate(githubDataFaker.date().past(18250, TimeUnit.DAYS));
-		String futureDate = formmatedDate(githubDataFaker.date().future(18250, TimeUnit.DAYS));
-		setPastDate(pastDate);
-		setFutureDate(futureDate);
+		setPastDate2Days(formmatedDate(githubDataFaker.date().past(2, TimeUnit.DAYS)));
+		setPastDate1Week(formmatedDate(githubDataFaker.date().past(7, TimeUnit.DAYS)));
+		setPastDate1Month(formmatedDate(githubDataFaker.date().past(30, TimeUnit.DAYS)));
+		setPastDate6Months(formmatedDate(githubDataFaker.date().past(180, TimeUnit.DAYS)));
+		setPastDate1Year(formmatedDate(githubDataFaker.date().past(365, TimeUnit.DAYS)));
+		setPastDate10Years(formmatedDate(githubDataFaker.date().past(3650, TimeUnit.DAYS)));
+		setPastDate25Years(formmatedDate(githubDataFaker.date().past(9131, TimeUnit.DAYS)));
+		setPastDate50Years(formmatedDate(githubDataFaker.date().past(18250, TimeUnit.DAYS)));
+		
+		// future dates
+		setFutureDate2Days(formmatedDate(githubDataFaker.date().future(2, TimeUnit.DAYS)));
+		setFutureDate1Week(formmatedDate(githubDataFaker.date().future(7, TimeUnit.DAYS)));
+		setFutureDate1Month(formmatedDate(githubDataFaker.date().future(30, TimeUnit.DAYS)));
+		setFutureDate6Months(formmatedDate(githubDataFaker.date().future(180, TimeUnit.DAYS)));
+		setFutureDate1Year(formmatedDate(githubDataFaker.date().future(365, TimeUnit.DAYS)));
+		setFutureDate10Years(formmatedDate(githubDataFaker.date().future(3650, TimeUnit.DAYS)));
+		setFutureDate25Years(formmatedDate(githubDataFaker.date().future(9131, TimeUnit.DAYS)));
+		setFutureDate50Years(formmatedDate(githubDataFaker.date().future(18250, TimeUnit.DAYS)));
 		
 		// locations
 		// get a random city/state/zip
@@ -267,20 +295,132 @@ public class DataFakerEntryRow {
 		this.userName = userName;
 	}
 
-	public String getPastDate() {
-		return pastDate;
+	public String getPastDate2Days() {
+		return pastDate2Days;
 	}
 
-	public void setPastDate(String pastDate) {
-		this.pastDate = pastDate;
+	public void setPastDate2Days(String pastDate2Days) {
+		this.pastDate2Days = pastDate2Days;
 	}
 
-	public String getFutureDate() {
-		return futureDate;
+	public String getPastDate1Week() {
+		return pastDate1Week;
 	}
 
-	public void setFutureDate(String futureDate) {
-		this.futureDate = futureDate;
+	public void setPastDate1Week(String pastDate1Week) {
+		this.pastDate1Week = pastDate1Week;
+	}
+
+	public String getPastDate1Month() {
+		return pastDate1Month;
+	}
+
+	public void setPastDate1Month(String pastDate1Month) {
+		this.pastDate1Month = pastDate1Month;
+	}
+
+	public String getPastDate6Months() {
+		return pastDate6Months;
+	}
+
+	public void setPastDate6Months(String pastDate6Months) {
+		this.pastDate6Months = pastDate6Months;
+	}
+
+	public String getPastDate1Year() {
+		return pastDate1Year;
+	}
+
+	public void setPastDate1Year(String pastDate1Year) {
+		this.pastDate1Year = pastDate1Year;
+	}
+
+	public String getPastDate10Years() {
+		return pastDate10Years;
+	}
+
+	public void setPastDate10Years(String pastDate10Years) {
+		this.pastDate10Years = pastDate10Years;
+	}
+
+	public String getPastDate25Years() {
+		return pastDate25Years;
+	}
+
+	public void setPastDate25Years(String pastDate25Years) {
+		this.pastDate25Years = pastDate25Years;
+	}
+
+	public String getPastDate50Years() {
+		return pastDate50Years;
+	}
+
+	public void setPastDate50Years(String pastDate50Years) {
+		this.pastDate50Years = pastDate50Years;
+	}
+	
+	public String getFutureDate2Days() {
+		return futureDate2Days;
+	}
+
+	public void setFutureDate2Days(String futureDate2Days) {
+		this.futureDate2Days = futureDate2Days;
+	}
+
+	public String getFutureDate1Week() {
+		return futureDate1Week;
+	}
+
+	public void setFutureDate1Week(String futureDate1Week) {
+		this.futureDate1Week = futureDate1Week;
+	}
+
+	public String getFutureDate1Month() {
+		return futureDate1Month;
+	}
+
+	public void setFutureDate1Month(String futureDate1Month) {
+		this.futureDate1Month = futureDate1Month;
+	}
+
+	public String getFutureDate6Months() {
+		return futureDate6Months;
+	}
+
+	public void setFutureDate6Months(String futureDate6Months) {
+		this.futureDate6Months = futureDate6Months;
+	}
+
+	public String getFutureDate1Year() {
+		return futureDate1Year;
+	}
+
+	public void setFutureDate1Year(String futureDate1Year) {
+		this.futureDate1Year = futureDate1Year;
+	}
+
+	public String getFutureDate10Years() {
+		return futureDate10Years;
+	}
+
+	public void setFutureDate10Years(String futureDate10Years) {
+		this.futureDate10Years = futureDate10Years;
+	}
+
+	public String getFutureDate25Years() {
+		return futureDate25Years;
+	}
+
+	public void setFutureDate25Years(String futureDate25Years) {
+		this.futureDate25Years = futureDate25Years;
+	}
+
+	public String getFutureDate50Years() {
+		return futureDate50Years;
+	}
+
+	public void setFutureDate50Years(String futureDate50Years) {
+		this.futureDate50Years = futureDate50Years;
 	}
 
 	public String getStreet() {
