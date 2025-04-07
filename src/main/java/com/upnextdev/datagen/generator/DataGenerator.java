@@ -211,6 +211,17 @@ public abstract class DataGenerator {
 					dataReturned = "";
 				}
 			}
+		} 
+		else if (dataType.equalsIgnoreCase(DataType.PRESENT_DATE.getDataType())) {
+			if (required) {
+				dataReturned = dfer.getFutureDate2Days();
+			} else {
+				if (shouldAddData()) {
+					dataReturned = dfer.getFutureDate2Days();
+				} else {
+					dataReturned = "";
+				}
+			}
 		} else if (dataType.equalsIgnoreCase(DataType.FUTURE_DATE_2DAYS.getDataType())) {
 			if (required) {
 				dataReturned = dfer.getFutureDate2Days();
@@ -490,7 +501,7 @@ public abstract class DataGenerator {
 		return dataReturned;
 	}
 
-	abstract public void printData(List<String> columnValues, List<DataEntry> e, int count, String tableName)
+	abstract public void printData(List<String> columnValues, List<DataEntry> e, int count, String tableName, String fileName)
 			throws Exception;
 
 	// if a column is optional, it will generate data based on

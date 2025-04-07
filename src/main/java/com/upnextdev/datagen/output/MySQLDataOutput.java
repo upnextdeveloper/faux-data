@@ -6,12 +6,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+import com.upnextdev.datagen.util.FileLocations;
+
 public class MySQLDataOutput implements DataOutput {
 
 	
 	@Override
-	public void createOutputFile(List<String> dataRows, List<String> columnValues, String tableName) {
-		String mySqlFileName = "faux-data-mysql-" + System.currentTimeMillis() + ".sql";
+	public void createOutputFile(List<String> dataRows, List<String> columnValues, String tableName, String fileName) {
+		FileLocations loc = new FileLocations();
+		String mySqlFileName = loc.getLocalFileLocation() + fileName;
 		File mySQLFile = null;
 		
 		try {

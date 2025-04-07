@@ -32,6 +32,7 @@ public class DataFakerEntryRow {
 	private String pastDate10Years;
 	private String pastDate25Years;
 	private String pastDate50Years;
+	private String presentDate;
 	private String futureDate2Days;
 	private String futureDate1Week;
 	private String futureDate1Month;
@@ -90,7 +91,7 @@ public class DataFakerEntryRow {
 		setRace(githubDataFaker.demographic().race());
 		setMaritalStatus(determineMaritalStatus(githubDataFaker, randomAgeFromBirthday));
 		setCurrentEducation(determineEducationStatus(githubDataFaker, randomAgeFromBirthday));
-		
+		 
 		// dates
 		setPastDate2Days(formmatedDate(githubDataFaker.date().past(2, TimeUnit.DAYS)));
 		setPastDate1Week(formmatedDate(githubDataFaker.date().past(7, TimeUnit.DAYS)));
@@ -100,6 +101,7 @@ public class DataFakerEntryRow {
 		setPastDate10Years(formmatedDate(githubDataFaker.date().past(3650, TimeUnit.DAYS)));
 		setPastDate25Years(formmatedDate(githubDataFaker.date().past(9131, TimeUnit.DAYS)));
 		setPastDate50Years(formmatedDate(githubDataFaker.date().past(18250, TimeUnit.DAYS)));
+		setPresentDate(formmatedDate(new Date()));
 		
 		// future dates
 		setFutureDate2Days(formmatedDate(githubDataFaker.date().future(2, TimeUnit.DAYS)));
@@ -149,6 +151,10 @@ public class DataFakerEntryRow {
 		String posNegMoneyAmount = String.valueOf(githubDataFaker.number().randomDouble(2, -1000, 10000));
 		setMoneyPos(posMoneyAmount);
 		setMoneyPosNeg(posNegMoneyAmount);
+		
+		// numbers
+		setPositiveNum(String.valueOf(dataFaker.number().numberBetween(0, 10000000)));
+		
 	}
 	
 	private String determineMaritalStatus(com.github.javafaker.Faker githubDataFaker, int age) {
@@ -558,6 +564,13 @@ public class DataFakerEntryRow {
 	public void setAge(String age) {
 		this.age = age;
 	}
-	
+
+	public String getPresentDate() {
+		return presentDate;
+	}
+
+	public void setPresentDate(String presentDate) {
+		this.presentDate = presentDate;
+	}
 	
 }

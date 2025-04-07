@@ -10,7 +10,7 @@ import com.github.javafaker.Faker;
 import net.datafaker.providers.base.Vehicle;
 
 @SpringBootApplication
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 20)
 public class FauxDataApplication {
 
 	public static void main(String[] args) {
@@ -19,6 +19,8 @@ public class FauxDataApplication {
 		// multiple options
 		System.out.println(f.options().option("Pass","Fail"));
 		System.out.println(f.medical().hospitalName());
+		System.out.println(f.finance().creditCard());
+		System.out.println(f.aviation().airport());
 		
 		// datafaker version
 		net.datafaker.Faker faker = new net.datafaker.Faker();
@@ -26,6 +28,8 @@ public class FauxDataApplication {
 		System.out.println(faker.address().state());
 		Vehicle v = faker.vehicle();
 		System.out.println(f.currency().name());
+		System.out.println(faker.finance().creditCard());
+		System.out.println(faker.transport());
 	}
 
 }

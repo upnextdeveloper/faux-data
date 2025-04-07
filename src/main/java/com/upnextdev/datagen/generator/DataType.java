@@ -17,6 +17,7 @@ public enum DataType {
 	PAST_DATE_10YEARS("Past Date - Up to 10 Years"),
 	PAST_DATE_25YEARS("Past Date - Up to 25 Years"),
 	PAST_DATE_50YEARS("Past Date - Up to 50 Years"),
+	PRESENT_DATE("Present Day"),
 	// future dates
 	FUTURE_DATE_2DAYS("Future Date - Up to 2 Days"),
 	FUTURE_DATE_1WEEK("Future Date - Up to 1 Week"),
