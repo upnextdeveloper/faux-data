@@ -1,0 +1,21 @@
+version: '3.3'
+
+services:
+  faux_audit:
+    image: mysql:5.7
+    container_name: faux_audit-mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'faux_auditdb'
+      MYSQL_USER: 'faux_app_user'
+      MYSQL_PASSWORD: 'fauxVis$ion'
+      MYSQL_ROOT_PASSWORD: 'root_pass'
+    ports:
+      - 3307:3306
+    expose:
+      - '3306'
+    volumes:
+      - faux-db:/var/lib/mysql
+  
+volumes:
+  faux-db:

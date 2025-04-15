@@ -27,10 +27,11 @@ public abstract class DataGenerator {
 	private CityStateData csd = new CityStateData();
 	private GenderedNames genderedNames = new GenderedNames();
 	int newId = githubFaker.number().numberBetween(1, 100000);
-	
+
 	public DataGenerator() {
-		// generate a random date by default (for birthday and create an age based off of it)
-		
+		// generate a random date by default (for birthday and create an age based off
+		// of it)
+
 	}
 
 	protected List<String> generateData(List<DataEntry> dataEntries, int rowCount) throws Exception {
@@ -62,7 +63,6 @@ public abstract class DataGenerator {
 		String dataType = entry.getDataType();
 		boolean required = true;
 		String dataReturned = "";
-		
 
 		if (isRequired.equalsIgnoreCase("Y")) {
 			required = true;
@@ -83,8 +83,85 @@ public abstract class DataGenerator {
 				}
 			}
 
-		} else if (dataType.equalsIgnoreCase(DataType.PAST_DATE.getDataType())) {
-			String pastDate = dfer.getPastDate();
+		} else if (dataType.equalsIgnoreCase(DataType.PAST_DATE_2DAYS.getDataType())) {
+			String pastDate = dfer.getPastDate2Days();
+			if (required) {
+				dataReturned = pastDate;
+			} else {
+				if (shouldAddData()) {
+					dataReturned = pastDate;
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.PAST_DATE_1WEEK.getDataType())) {
+			String pastDate = dfer.getPastDate1Week();
+			if (required) {
+				dataReturned = pastDate;
+			} else {
+				if (shouldAddData()) {
+					dataReturned = pastDate;
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.PAST_DATE_1MONTH.getDataType())) {
+			String pastDate = dfer.getPastDate1Month();
+			if (required) {
+				dataReturned = pastDate;
+			} else {
+				if (shouldAddData()) {
+					dataReturned = pastDate;
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.PAST_DATE_6MONTHS.getDataType())) {
+			String pastDate = dfer.getPastDate6Months();
+			if (required) {
+				dataReturned = pastDate;
+			} else {
+				if (shouldAddData()) {
+					dataReturned = pastDate;
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.PAST_DATE_1YEAR.getDataType())) {
+			String pastDate = dfer.getPastDate1Year();
+			if (required) {
+				dataReturned = pastDate;
+			} else {
+				if (shouldAddData()) {
+					dataReturned = pastDate;
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.PAST_DATE_10YEARS.getDataType())) {
+			String pastDate = dfer.getPastDate10Years();
+			if (required) {
+				dataReturned = pastDate;
+			} else {
+				if (shouldAddData()) {
+					dataReturned = pastDate;
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.PAST_DATE_25YEARS.getDataType())) {
+			String pastDate = dfer.getPastDate25Years();
+			if (required) {
+				dataReturned = pastDate;
+			} else {
+				if (shouldAddData()) {
+					dataReturned = pastDate;
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.PAST_DATE_50YEARS.getDataType())) {
+			String pastDate = dfer.getPastDate50Years();
 			if (required) {
 				dataReturned = pastDate;
 			} else {
@@ -134,12 +211,93 @@ public abstract class DataGenerator {
 					dataReturned = "";
 				}
 			}
-		} else if (dataType.equalsIgnoreCase(DataType.FUTURE_DATE.getDataType())) {
+		} 
+		else if (dataType.equalsIgnoreCase(DataType.PRESENT_DATE.getDataType())) {
 			if (required) {
-				dataReturned = dfer.getFutureDate();
+				dataReturned = dfer.getFutureDate2Days();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = dfer.getFutureDate();
+					dataReturned = dfer.getFutureDate2Days();
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.FUTURE_DATE_2DAYS.getDataType())) {
+			if (required) {
+				dataReturned = dfer.getFutureDate2Days();
+			} else {
+				if (shouldAddData()) {
+					dataReturned = dfer.getFutureDate2Days();
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.FUTURE_DATE_1WEEK.getDataType())) {
+			if (required) {
+				dataReturned = dfer.getFutureDate1Week();
+			} else {
+				if (shouldAddData()) {
+					dataReturned = dfer.getFutureDate1Week();
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.FUTURE_DATE_1MONTH.getDataType())) {
+			if (required) {
+				dataReturned = dfer.getFutureDate1Month();
+			} else {
+				if (shouldAddData()) {
+					dataReturned = dfer.getFutureDate1Month();
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.FUTURE_DATE_6MONTHS.getDataType())) {
+			if (required) {
+				dataReturned = dfer.getFutureDate6Months();
+			} else {
+				if (shouldAddData()) {
+					dataReturned = dfer.getFutureDate6Months();
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.FUTURE_DATE_1YEAR.getDataType())) {
+			if (required) {
+				dataReturned = dfer.getFutureDate1Year();
+			} else {
+				if (shouldAddData()) {
+					dataReturned = dfer.getFutureDate1Year();
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.FUTURE_DATE_10YEARS.getDataType())) {
+			if (required) {
+				dataReturned = dfer.getFutureDate10Years();
+			} else {
+				if (shouldAddData()) {
+					dataReturned = dfer.getFutureDate10Years();
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.FUTURE_DATE_25YEARS.getDataType())) {
+			if (required) {
+				dataReturned = dfer.getFutureDate25Years();
+			} else {
+				if (shouldAddData()) {
+					dataReturned = dfer.getFutureDate25Years();
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.FUTURE_DATE_50YEARS.getDataType())) {
+			if (required) {
+				dataReturned = dfer.getFutureDate50Years();
+			} else {
+				if (shouldAddData()) {
+					dataReturned = dfer.getFutureDate50Years();
 				} else {
 					dataReturned = "";
 				}
@@ -191,6 +349,26 @@ public abstract class DataGenerator {
 			} else {
 				if (shouldAddData()) {
 					dataReturned = dfer.getZipCode();
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.TRUE.getDataType())) {
+			if (required) {
+				dataReturned = "True";
+			} else {
+				if (shouldAddData()) {
+					dataReturned = "True";
+				} else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.FALSE.getDataType())) {
+			if (required) {
+				dataReturned = "False";
+			} else {
+				if (shouldAddData()) {
+					dataReturned = "False";
 				} else {
 					dataReturned = "";
 				}
@@ -315,20 +493,22 @@ public abstract class DataGenerator {
 					dataReturned = "";
 				}
 			}
-		}  else {
+		} else {
 			System.out.println(dataType + " does not exist");
 			throw new Exception("Data type: " + dataType + " does not exist");
 		}
-		
+
 		return dataReturned;
 	}
-	
-	abstract public void printData(List <String> columnValues, List<DataEntry> e, int count, String tableName) throws Exception;
+
+	abstract public void printData(List<String> columnValues, List<DataEntry> e, int count, String tableName, String fileName)
+			throws Exception;
+
 	// if a column is optional, it will generate data based on
 	// if the below value is returned true
 	private boolean shouldAddData() {
 		Random random = new Random();
 		return random.nextBoolean();
 	}
-	
+
 }

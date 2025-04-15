@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
+import com.upnextdev.datagen.entity.AuditEmail;
 import com.upnextdev.datagen.entity.DataEntry;
 import com.upnextdev.datagen.generator.DataGenerator;
 import com.upnextdev.datagen.generator.ExcelGenerator;
@@ -31,6 +33,8 @@ public class DataEntryService {
 		List<String> fileTypeValues = new ArrayList<>();
 		
 		List<String> tableNameValues = new ArrayList<String>();
+		
+		List<String> fileNames = new ArrayList<String>();
 
 		values.forEach(v -> {
 			v = v.trim();
@@ -52,6 +56,9 @@ public class DataEntryService {
 			}else if(v.startsWith("tableName")) {
 				v = v.substring(10);
 				tableNameValues.add(v);
+			}else if(v.startsWith("fileName")) {
+				v = v.substring(9);
+				fileNames.add(v);
 			}
 		});
 		
@@ -63,17 +70,16 @@ public class DataEntryService {
 		System.out.println("-------------");
 		
 		String fileType = fileTypeValues.get(0);
+		String fileName = fileNames.get(0);
 		
 		DataGenerator gen = null;
 		if(fileType.equalsIgnoreCase(OutputFileType.EXCEL_FILE.getFileType())) {
 			gen = new ExcelGenerator();
-			gen.printData(columnValues, entryList, rowCount, tableName);
+			gen.printData(columnValues, entryList, rowCount, tableName, fileName);
 		}else if(fileType.equalsIgnoreCase(OutputFileType.MYSQL_FILE.getFileType())) {
 			gen = new MySQLGenerator();
-			gen.printData(columnValues, entryList, rowCount, tableName);
+			gen.printData(columnValues, entryList, rowCount, tableName, fileName);
 		}
-		
-		
 		
 	}
 	
