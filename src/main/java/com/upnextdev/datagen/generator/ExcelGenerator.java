@@ -12,6 +12,7 @@ public class ExcelGenerator extends DataGenerator {
 
 		ExcelDataOutput edo = new ExcelDataOutput();
 		edo.createOutputFile(generateData(e, count), columnValues, tableName, fileName);
+		
 	}
 
 }
