@@ -353,6 +353,10 @@ public abstract class DataGenerator {
 					dataReturned = "";
 				}
 			}
+			// SOME CASES THE ZIP CODE MAY BE EMPTY..RARE BUT POSSIBLE
+			if(dataReturned.isBlank()) {
+				dataReturned = "00000";
+			}
 		} else if (dataType.equalsIgnoreCase(DataType.TRUE.getDataType())) {
 			if (required) {
 				dataReturned = "True";
