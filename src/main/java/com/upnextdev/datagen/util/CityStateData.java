@@ -40,8 +40,15 @@ public class CityStateData {
 				csz.setStateAbbr(row.getCell(2).toString().replace(",", " "));
 				// take the 4th (3) for the state name
 				csz.setStateName(row.getCell(3).toString().replace(",", " "));
+				//take the 6th (5) for the latitude
+				csz.setLatitude(row.getCell(6).toString().replace(",", " "));
+				//take the 7th (6) for the longitude
+				csz.setLongitude(row.getCell(7).toString().replace(",", " "));
+				// take the 14th (13) for the zip codes
+				csz.setTimeZone(row.getCell(13).toString().replace(",", " "));
 				// take the 16th (15) for the zip codes
 				csz.setZipCode(row.getCell(15).toString());
+				
 				
 				cityStates.add(csz);
 			}
@@ -68,6 +75,9 @@ public class CityStateData {
 		String stateAbbr;
 		String stateName;
 		String zipCode;
+		String latitude;
+		String longitude;
+		String timeZone;
 		public String getCity() {
 			return city;
 		}
@@ -92,6 +102,25 @@ public class CityStateData {
 		public void setZipCode(String zipCode) {
 			this.zipCode = zipCode;
 		}
+		public String getLatitude() {
+			return latitude;
+		}
+		public void setLatitude(String latitude) {
+			this.latitude = latitude;
+		}
+		public String getLongitude() {
+			return longitude;
+		}
+		public void setLongitude(String longitude) {
+			this.longitude = longitude;
+		}
+		public String getTimeZone() {
+			return timeZone;
+		}
+		public void setTimeZone(String timeZone) {
+			this.timeZone = timeZone;
+		}
+		
 		
 		
 	}

@@ -32,11 +32,15 @@ public enum DataType {
 	STATE("State"),
 	STATE_ABBR("State Abbreviation"),
 	ZIP_CODE("Zip Code"),
+	LATITUDE("Latitude"),
+	LONGITUDE("Longitude"),
+	TIME_ZONE("Time Zone"),
 	TRUE("True"),
 	FALSE("False"),
 	TRUE_FALSE("True/False"),
 	GENDER("Gender"),
 	BIRTHDAY("Birthday"),
+	BDAY18("Bday18"),
 	MONEY_POS("Money - Positive Only"),
 	MONEY_POSNEG("Money - Positive/Negative"),
 	POSITIVE_NUM("Positive Numbers"),
@@ -45,7 +49,8 @@ public enum DataType {
 	RACE("Race"),
 	MARITAL_STATUS("Marital Status"),
 	CURRENT_EDUCATION("Current Education"),
-	AGE("Age")
+	AGE("Age"),
+	AGE_18("Age18")
 	;
 	
 	private final String dataType;

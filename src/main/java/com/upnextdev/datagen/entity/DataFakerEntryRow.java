@@ -37,7 +37,7 @@ public class DataFakerEntryRow {
 	private String futureDate1Week;
 	private String futureDate1Month;
 	private String futureDate6Months;
-	private String futureDate1Year;
+	private String futureDate1Year; 
 	private String futureDate10Years;
 	private String futureDate25Years;
 	private String futureDate50Years;
@@ -46,6 +46,9 @@ public class DataFakerEntryRow {
 	private String state;
 	private String stateAbbr;
 	private String zipCode;
+	private String latitude;
+	private String longitude;
+	private String timeZone;
 	private String trueorFalse;
 	private String gender;
 	private String birthday;
@@ -58,6 +61,9 @@ public class DataFakerEntryRow {
 	private String maritalStatus;
 	private String currentEducation;
 	private String age;
+	
+	private String birthday18;
+	private String age18Plus;
 	
 	
 	public DataFakerEntryRow(com.github.javafaker.Faker githubDataFaker, Faker dataFaker, CityStateData csd, GenderedNames genderedNames) {
@@ -73,6 +79,14 @@ public class DataFakerEntryRow {
 		
 		setBirthday(formmatedDate(randomBirthdayDate));
 		setAge(String.valueOf(randomAgeFromBirthday));
+		
+		Date random18PlusBday = githubDataFaker.date().birthday(18, 120);
+		LocalDate localDate18Bday = random18PlusBday.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		int birthday18Year = localDate18Bday.getYear();
+		int random18AgeBday = currentYear - birthday18Year;
+		
+		setBirthday18(formmatedDate(random18PlusBday));
+		setAge18Plus(String.valueOf(random18AgeBday));
 		
 		
 		// names (person)
@@ -123,6 +137,9 @@ public class DataFakerEntryRow {
 		String city = randomlyChoosenCsz.getCity();
 		String state = randomlyChoosenCsz.getStateName();
 		String stateAbb = randomlyChoosenCsz.getStateAbbr();
+		String latitude = randomlyChoosenCsz.getLatitude();
+		String longitude = randomlyChoosenCsz.getLongitude();
+		String timeZone = randomlyChoosenCsz.getTimeZone();
 		
 		String[] randomZipCodes = randomlyChoosenCsz.getZipCode().split("\\s+");
 		Random randomZipCodeIndex = new Random();
@@ -141,6 +158,9 @@ public class DataFakerEntryRow {
 		setState(state);
 		setStateAbbr(stateAbb);
 		setZipCode(zipCode);
+		setLatitude(latitude);
+		setLongitude(longitude);
+		setTimeZone(timeZone);
 		
 		//true false
 		String truefalse = String.valueOf(githubDataFaker.bool().bool());
@@ -190,6 +210,7 @@ public class DataFakerEntryRow {
 		String formmattedDate = formatter.format(date);
 		return formmattedDate;
 	}
+	
 	
 	private String getGenderedName(com.github.javafaker.Faker githubDataFaker, String randomGender, GenderedNames genderedNames) {
 		String firstName = "";
@@ -469,6 +490,30 @@ public class DataFakerEntryRow {
 		this.zipCode = zipCode;
 	}
 
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+
+	public String getTimeZone() {
+		return timeZone;
+	}
+
+	public void setTimeZone(String timeZone) {
+		this.timeZone = timeZone;
+	}
+
 	public String getTrueorFalse() {
 		return trueorFalse;
 	}
@@ -565,6 +610,14 @@ public class DataFakerEntryRow {
 		this.age = age;
 	}
 
+	public String getAge18Plus() {
+		return age18Plus;
+	}
+
+	public void setAge18Plus(String age18Plus) {
+		this.age18Plus = age18Plus;
+	}
+
 	public String getPresentDate() {
 		return presentDate;
 	}
@@ -572,5 +625,12 @@ public class DataFakerEntryRow {
 	public void setPresentDate(String presentDate) {
 		this.presentDate = presentDate;
 	}
-	
+
+	public String getBirthday18() {
+		return birthday18;
+	}
+
+	public void setBirthday18(String birthday18) {
+		this.birthday18 = birthday18;
+	}
 }

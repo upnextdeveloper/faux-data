@@ -1,8 +1,6 @@
 package com.upnextdev.datagen.output;
 
 public enum OutputFileType {
-
-	
 	
 	EXCEL_FILE("Excel File"),
 	MYSQL_FILE("MySQL File");

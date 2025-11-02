@@ -45,8 +45,15 @@ public class MySQLDataOutput implements DataOutput {
 					
 					String[] arr = dataRows.get(i).split(",");
 					for(String arrValue: arr) {
-						insertRow = insertRow + "\"" + arrValue + "\"";
-						insertRow = insertRow + ",";
+						if(arrValue.trim().isBlank()) {
+							// for blank values, we want to return the word NULL
+							insertRow = insertRow + "NULL";
+							insertRow = insertRow + ",";
+						}else {
+							insertRow = insertRow + "\"" + arrValue + "\"";
+							insertRow = insertRow + ",";
+						}
+						
 					}
 					insertRow = insertRow.substring(0, insertRow.length() - 1);
 					insertRow = insertRow + ");";

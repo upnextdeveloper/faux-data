@@ -211,13 +211,12 @@ public abstract class DataGenerator {
 					dataReturned = "";
 				}
 			}
-		} 
-		else if (dataType.equalsIgnoreCase(DataType.PRESENT_DATE.getDataType())) {
+		} else if (dataType.equalsIgnoreCase(DataType.PRESENT_DATE.getDataType())) {
 			if (required) {
-				dataReturned = dfer.getFutureDate2Days();
+				dataReturned = dfer.getPresentDate();
 			} else {
 				if (shouldAddData()) {
-					dataReturned = dfer.getFutureDate2Days();
+					dataReturned = dfer.getPresentDate();
 				} else {
 					dataReturned = "";
 				}
@@ -353,6 +352,40 @@ public abstract class DataGenerator {
 					dataReturned = "";
 				}
 			}
+			// SOME CASES THE ZIP CODE MAY BE EMPTY..RARE BUT POSSIBLE
+			if (dataReturned.isBlank()) {
+				dataReturned = "00000";
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.LATITUDE.getDataType())) {
+			if(required) {
+				dataReturned = dfer.getLatitude();
+			}else {
+				if(shouldAddData()) {
+					dataReturned = dfer.getLatitude();
+				}else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.LONGITUDE.getDataType())) {
+			if(required) {
+				dataReturned = dfer.getLongitude();
+			}else {
+				if(shouldAddData()) {
+					dataReturned = dfer.getLongitude();
+				}else {
+					dataReturned = "";
+				}
+			}
+		} else if (dataType.equalsIgnoreCase(DataType.TIME_ZONE.getDataType())) {
+			if(required) {
+				dataReturned = dfer.getTimeZone();
+			}else {
+				if(shouldAddData()) {
+					dataReturned = dfer.getTimeZone();
+				}else {
+					dataReturned = "";
+				}
+			}
 		} else if (dataType.equalsIgnoreCase(DataType.TRUE.getDataType())) {
 			if (required) {
 				dataReturned = "True";
@@ -403,6 +436,16 @@ public abstract class DataGenerator {
 					dataReturned = "";
 				}
 			}
+		} else if(dataType.equalsIgnoreCase(DataType.BDAY18.getDataType())) {
+			if (required) {
+				dataReturned = dfer.getBirthday18();
+			} else {
+				if (shouldAddData()) {
+					dataReturned = dfer.getBirthday18();
+				} else {
+					dataReturned = "";
+				}
+			}
 		} else if (dataType.equalsIgnoreCase(DataType.AGE.getDataType())) {
 			if (required) {
 				dataReturned = dfer.getAge();
@@ -410,6 +453,16 @@ public abstract class DataGenerator {
 				if (shouldAddData()) {
 					dataReturned = dfer.getAge();
 				} else {
+					dataReturned = "";
+				}
+			}
+		} else if(dataType.equalsIgnoreCase(DataType.AGE_18.getDataType())) {
+			if(required) {
+				dataReturned = dfer.getAge18Plus();
+			}else {
+				if(shouldAddData()) {
+					dataReturned = dfer.getAge18Plus();
+				}else {
 					dataReturned = "";
 				}
 			}
@@ -501,8 +554,8 @@ public abstract class DataGenerator {
 		return dataReturned;
 	}
 
-	abstract public void printData(List<String> columnValues, List<DataEntry> e, int count, String tableName, String fileName)
-			throws Exception;
+	abstract public void printData(List<String> columnValues, List<DataEntry> e, int count, String tableName,
+			String fileName) throws Exception;
 
 	// if a column is optional, it will generate data based on
 	// if the below value is returned true
