@@ -43,6 +43,19 @@ public class ExcelDataOutput implements DataOutput{
 				newRow.createCell(j).setCellValue(arr[j]);
 			}
 		}
+
+        try {
+            opStream = new FileOutputStream(excelFile, false);
+            workbook.write(opStream);
+            opStream.close();
+
+            System.out.println("New file created: " + excelName);
+        }catch(IOException e) {
+            e.printStackTrace();
+
+        }finally {
+            System.out.println("File Creation complete");
+        }
 	}
 
 }
