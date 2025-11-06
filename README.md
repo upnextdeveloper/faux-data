@@ -19,6 +19,7 @@ You can:
   <li>Spring Boot</li>
   <li>MySQL</li>
   <li>Docker (Optional)</li>
+  <li>Node JS version 22.9.0</li>
 </ul>
 
 <b>Installation Instructions</b>
@@ -42,4 +43,9 @@ You can:
 <h4>Now let us set up the UI</h4>
 <ol>
   <li>Clone this repository next: <a href="https://github.com/hiddencodxr/faux_data_ui" target="_blank">Faux Data UI</a></li>
+  <li>Open your terminal and run <i>npm install</i></li>
+  <li>In the same terminal run <i>npm run</i></li>
 </ol>
+<h4>UI should now be up and running.</h4>
+
+<h1>Faux Data should now be up and running.</h1>
